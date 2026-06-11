@@ -54,6 +54,10 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
     }
   };
 
+  const isPassengerDetailsValid = passengers.every(
+    (p) => p.name.trim() !== "" && p.age.trim() !== "" && Number(p.age) > 0
+  );
+
   const numericPrice = Number(String(price).replace("₹", "").replace(",", ""));
   const totalAmount = Math.max(numericPrice * passengers.length - discount, 0);
 
@@ -80,9 +84,7 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
 
                 <p className="text-gray-500">{stops}</p>
 
-                <p className="text-yellow-500 font-bold">
-                  ⭐ 4.8 Rating
-                </p>
+                <p className="text-yellow-500 font-bold">⭐ 4.8 Rating</p>
               </div>
             </div>
 
@@ -114,13 +116,9 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
           </div>
 
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-green-600">
-              {price}
-            </h2>
+            <h2 className="text-3xl font-bold text-green-600">{price}</h2>
 
-            <p className="text-sm text-slate-500 mt-1">
-              per traveller
-            </p>
+            <p className="text-sm text-slate-500 mt-1">per traveller</p>
 
             <button
               onClick={() => setShowModal(true)}
@@ -165,9 +163,13 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
               </p>
             </div>
 
-            <h3 className="text-2xl font-bold mb-4">
-              Passenger Details
-            </h3>
+            <h3 className="text-2xl font-bold mb-4">Passenger Details</h3>
+
+            {!isPassengerDetailsValid && (
+              <p className="mb-4 bg-red-50 text-red-600 p-3 rounded-xl font-semibold">
+                Please fill passenger name and valid age before payment.
+              </p>
+            )}
 
             <div className="space-y-5">
               {passengers.map((passenger, index) => (
@@ -176,9 +178,7 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
                   className="border rounded-2xl p-5 bg-slate-50"
                 >
                   <div className="flex justify-between items-center mb-4">
-                    <h4 className="font-bold">
-                      Passenger {index + 1}
-                    </h4>
+                    <h4 className="font-bold">Passenger {index + 1}</h4>
 
                     {passengers.length > 1 && (
                       <button
@@ -207,6 +207,7 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
                       }
                       className="p-4 border rounded-xl"
                       type="number"
+                      min="1"
                       placeholder="Age"
                     />
 
@@ -236,9 +237,7 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
               + Add More Passenger
             </button>
 
-            <h3 className="text-2xl font-bold mt-8 mb-4">
-              Add-ons
-            </h3>
+            <h3 className="text-2xl font-bold mt-8 mb-4">Add-ons</h3>
 
             <div className="grid md:grid-cols-3 gap-4">
               <select
@@ -324,11 +323,18 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
 
             <div className="flex gap-4 mt-6">
               <button
+                disabled={!isPassengerDetailsValid}
                 onClick={() => {
+                  if (!isPassengerDetailsValid) return;
+
                   setShowModal(false);
                   navigate("/payment");
                 }}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-bold"
+                className={`flex-1 py-3 rounded-xl font-bold ${
+                  isPassengerDetailsValid
+                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:scale-105 transition"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
               >
                 Continue to Payment
               </button>
