@@ -45,9 +45,7 @@ function Flights() {
       tripType !== "roundtrip" || flight.returnDate === selectedReturnDate;
 
     const matchPrice = flight.price <= price;
-
     const matchAirline = airline === "All" || flight.airline === airline;
-
     const matchStops = stops === "All" || flight.stops === stops;
 
     return (
@@ -95,7 +93,8 @@ function Flights() {
 
             <p className="text-slate-500 mt-3">
               Select From, To and Departure Date.
-              {tripType === "roundtrip" && " Return date is required for round trip."}
+              {tripType === "roundtrip" &&
+                " Return date is required for round trip."}
             </p>
           </div>
         ) : (
@@ -114,6 +113,7 @@ function Flights() {
                   sortedFlights.map((flight) => (
                     <FlightCard
                       key={flight.id}
+                      flightNumber={flight.flightNumber}
                       logo={flight.logo}
                       airline={flight.airline}
                       from={flight.from}
@@ -131,7 +131,8 @@ function Flights() {
                     </h3>
 
                     <p className="text-slate-500 mt-3">
-                      Try the exact available dates from your flight data.
+                      Try the exact available From, To and Date from your flight
+                      data.
                     </p>
                   </div>
                 )}

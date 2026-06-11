@@ -1,6 +1,7 @@
 const flights = [
   {
     id: 1,
+    flightNumber: "6E203",
     logo: "🔵",
     airline: "IndiGo",
     from: "Delhi, India",
@@ -15,6 +16,7 @@ const flights = [
   },
   {
     id: 2,
+    flightNumber: "AI302",
     logo: "🇮🇳",
     airline: "Air India",
     from: "Delhi, India",
@@ -29,6 +31,7 @@ const flights = [
   },
   {
     id: 3,
+    flightNumber: "UK808",
     logo: "⭐",
     airline: "Vistara",
     from: "Mumbai, India",
@@ -43,6 +46,7 @@ const flights = [
   },
   {
     id: 4,
+    flightNumber: "QP145",
     logo: "🟣",
     airline: "Akasa Air",
     from: "Bangalore, India",
@@ -57,6 +61,7 @@ const flights = [
   },
   {
     id: 5,
+    flightNumber: "EK511",
     logo: "🔴",
     airline: "Emirates",
     from: "Delhi, India",
