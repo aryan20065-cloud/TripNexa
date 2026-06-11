@@ -7,7 +7,7 @@ import Trains from "./pages/Trains";
 import Bus from "./pages/Bus";
 import Holidays from "./pages/Holidays";
 import Login from "./pages/Login";
-
+import BookingSuccess from "./pages/BookingSuccess";
 function App() {
   return (
     <Routes>
@@ -18,6 +18,7 @@ function App() {
       <Route path="/bus" element={<Bus />} />
       <Route path="/holidays" element={<Holidays />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/booking-success" element={<BookingSuccess />} />
     </Routes>
   );
 }
