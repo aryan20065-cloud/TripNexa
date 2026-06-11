@@ -13,6 +13,9 @@ function Flights() {
   const [searchParams] = useSearchParams();
 
   const searched = searchParams.get("searched") === "true";
+  const tripType = searchParams.get("tripType") || "oneway";
+  const selectedDeparture = searchParams.get("departure") || "";
+  const selectedReturnDate = searchParams.get("returnDate") || "";
 
   const [from, setFrom] = useState(searchParams.get("from") || "");
   const [to, setTo] = useState(searchParams.get("to") || "");
@@ -22,16 +25,39 @@ function Flights() {
   const [airline, setAirline] = useState("All");
   const [stops, setStops] = useState("All");
 
+  const isSearchReady =
+    searched &&
+    from &&
+    to &&
+    selectedDeparture &&
+    (tripType !== "roundtrip" || selectedReturnDate);
+
   const filteredFlights = flights.filter((flight) => {
+    if (!isSearchReady) return false;
+
     const matchRoute =
-      flight.from.toLowerCase().includes(from.toLowerCase()) &&
-      flight.to.toLowerCase().includes(to.toLowerCase());
+      flight.from.toLowerCase() === from.toLowerCase() &&
+      flight.to.toLowerCase() === to.toLowerCase();
+
+    const matchDepartureDate = flight.date === selectedDeparture;
+
+    const matchReturnDate =
+      tripType !== "roundtrip" || flight.returnDate === selectedReturnDate;
 
     const matchPrice = flight.price <= price;
+
     const matchAirline = airline === "All" || flight.airline === airline;
+
     const matchStops = stops === "All" || flight.stops === stops;
 
-    return matchRoute && matchPrice && matchAirline && matchStops;
+    return (
+      matchRoute &&
+      matchDepartureDate &&
+      matchReturnDate &&
+      matchPrice &&
+      matchAirline &&
+      matchStops
+    );
   });
 
   const sortedFlights = [...filteredFlights].sort((a, b) => {
@@ -49,7 +75,7 @@ function Flights() {
         <div className="pt-36 text-center text-white">
           <h1 className="text-6xl font-bold mb-4">✈ Book Your Flight</h1>
           <p className="text-xl opacity-90">
-            Search domestic and international flights
+            Search domestic and international flights by date
           </p>
         </div>
       </section>
@@ -61,13 +87,15 @@ function Flights() {
       <section className="max-w-7xl mx-auto py-16 px-6">
         <h2 className="text-4xl font-bold mb-8">Available Flights</h2>
 
-        {!searched && !from && !to ? (
+        {!isSearchReady ? (
           <div className="bg-white rounded-3xl p-12 text-center shadow-xl">
             <h3 className="text-3xl font-bold text-slate-800">
               Search flights to see results
             </h3>
+
             <p className="text-slate-500 mt-3">
-              Select From, To, trip type, date and special fare.
+              Select From, To and Departure Date.
+              {tripType === "roundtrip" && " Return date is required for round trip."}
             </p>
           </div>
         ) : (
@@ -101,8 +129,9 @@ function Flights() {
                     <h3 className="text-3xl font-bold text-slate-800">
                       No flights found
                     </h3>
+
                     <p className="text-slate-500 mt-3">
-                      Try changing city, country, price or filters.
+                      Try the exact available dates from your flight data.
                     </p>
                   </div>
                 )}
