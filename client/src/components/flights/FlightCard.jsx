@@ -4,6 +4,8 @@ import WishlistButton from "./WishlistButton";
 
 function FlightCard({ airline, time, duration, price, stops }) {
   const [showModal, setShowModal] = useState(false);
+  const [coupon, setCoupon] = useState("");
+  const [discount, setDiscount] = useState(0);
   const navigate = useNavigate();
 
   const airlineLogo = {
@@ -11,6 +13,12 @@ function FlightCard({ airline, time, duration, price, stops }) {
     "Air India": "🇮🇳",
     Vistara: "⭐",
     "Akasa Air": "🟣",
+    Emirates: "🔴",
+  };
+
+  const applyCoupon = () => {
+    if (coupon.toUpperCase() === "TRIP500") setDiscount(500);
+    else alert("Invalid Coupon");
   };
 
   return (
@@ -20,22 +28,26 @@ function FlightCard({ airline, time, duration, price, stops }) {
           <div>
             <div className="flex items-center gap-4">
               <WishlistButton />
-
-              <div className="text-4xl">
-                {airlineLogo[airline] || "✈️"}
-              </div>
+              <div className="text-4xl">{airlineLogo[airline] || "✈️"}</div>
 
               <div>
-                <h3 className="text-3xl font-bold text-blue-700">
-                  {airline}
-                </h3>
+                <h3 className="text-3xl font-bold text-blue-700">{airline}</h3>
                 <p className="text-gray-500">{stops}</p>
+                <p className="text-yellow-500 font-bold">⭐ 4.8 Rating</p>
               </div>
             </div>
 
-            <span className="inline-block mt-4 bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold text-sm">
-              Best Price
-            </span>
+            <div className="flex flex-wrap gap-2 mt-4">
+              <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold text-sm">
+                Best Price
+              </span>
+              <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-bold text-sm">
+                15kg Baggage
+              </span>
+              <span className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full font-bold text-sm">
+                Free Meal
+              </span>
+            </div>
           </div>
 
           <div className="text-center">
@@ -59,49 +71,68 @@ function FlightCard({ airline, time, duration, price, stops }) {
 
       {showModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-3xl p-8 w-full max-w-lg shadow-2xl">
+          <div className="bg-white rounded-3xl p-8 w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
             <h2 className="text-3xl font-bold text-center mb-6">
               ✈ Confirm Booking
             </h2>
 
-            <div className="space-y-3 mb-6">
-              <p>
-                <strong>Airline:</strong> {airline}
-              </p>
-              <p>
-                <strong>Time:</strong> {time}
-              </p>
-              <p>
-                <strong>Duration:</strong> {duration}
-              </p>
-              <p>
-                <strong>Price:</strong> {price}
-              </p>
+            <div className="grid md:grid-cols-2 gap-4 mb-6">
+              <p><strong>Airline:</strong> {airline}</p>
+              <p><strong>Time:</strong> {time}</p>
+              <p><strong>Duration:</strong> {duration}</p>
+              <p><strong>Price:</strong> {price}</p>
             </div>
 
-            <input
-              type="text"
-              placeholder="Passenger Name"
-              className="w-full p-4 border rounded-xl mb-4"
-            />
-
-            <input
-              type="number"
-              placeholder="Age"
-              className="w-full p-4 border rounded-xl mb-4"
-            />
+            <input className="w-full p-4 border rounded-xl mb-4" placeholder="Passenger Name" />
+            <input className="w-full p-4 border rounded-xl mb-4" type="number" placeholder="Age" />
 
             <select className="w-full p-4 border rounded-xl mb-4">
-              <option>Window Seat</option>
-              <option>Aisle Seat</option>
-              <option>Middle Seat</option>
+              <option>Seat 12A - Window</option>
+              <option>Seat 12B - Middle</option>
+              <option>Seat 12C - Aisle</option>
+              <option>Seat 14A - Window</option>
             </select>
 
-            <select className="w-full p-4 border rounded-xl mb-6">
+            <select className="w-full p-4 border rounded-xl mb-4">
+              <option>Vegetarian Meal</option>
+              <option>Non-Vegetarian Meal</option>
+              <option>Vegan Meal</option>
+              <option>Jain Meal</option>
+            </select>
+
+            <select className="w-full p-4 border rounded-xl mb-4">
+              <option>15kg Included</option>
+              <option>20kg + ₹300</option>
+              <option>25kg + ₹600</option>
+              <option>30kg + ₹900</option>
+            </select>
+
+            <select className="w-full p-4 border rounded-xl mb-4">
               <option>Economy Class</option>
               <option>Premium Economy</option>
               <option>Business Class</option>
             </select>
+
+            <div className="flex gap-3 mb-4">
+              <input
+                value={coupon}
+                onChange={(e) => setCoupon(e.target.value)}
+                className="flex-1 p-4 border rounded-xl"
+                placeholder="Coupon Code: TRIP500"
+              />
+              <button
+                onClick={applyCoupon}
+                className="bg-green-600 text-white px-6 rounded-xl font-bold"
+              >
+                Apply
+              </button>
+            </div>
+
+            {discount > 0 && (
+              <p className="text-green-600 font-bold mb-4">
+                ₹{discount} discount applied!
+              </p>
+            )}
 
             <div className="flex gap-4">
               <button
@@ -111,7 +142,7 @@ function FlightCard({ airline, time, duration, price, stops }) {
                 }}
                 className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-bold"
               >
-                Confirm Booking
+                Continue to Payment
               </button>
 
               <button
