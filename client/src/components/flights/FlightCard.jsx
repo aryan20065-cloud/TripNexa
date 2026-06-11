@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import WishlistButton from "./WishlistButton";
 
 function FlightCard({ airline, time, duration, price, stops }) {
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const airlineLogo = {
     IndiGo: "🔵",
@@ -63,14 +65,31 @@ function FlightCard({ airline, time, duration, price, stops }) {
             </h2>
 
             <div className="space-y-3 mb-6">
-              <p><strong>Airline:</strong> {airline}</p>
-              <p><strong>Time:</strong> {time}</p>
-              <p><strong>Duration:</strong> {duration}</p>
-              <p><strong>Price:</strong> {price}</p>
+              <p>
+                <strong>Airline:</strong> {airline}
+              </p>
+              <p>
+                <strong>Time:</strong> {time}
+              </p>
+              <p>
+                <strong>Duration:</strong> {duration}
+              </p>
+              <p>
+                <strong>Price:</strong> {price}
+              </p>
             </div>
 
-            <input type="text" placeholder="Passenger Name" className="w-full p-4 border rounded-xl mb-4" />
-            <input type="number" placeholder="Age" className="w-full p-4 border rounded-xl mb-4" />
+            <input
+              type="text"
+              placeholder="Passenger Name"
+              className="w-full p-4 border rounded-xl mb-4"
+            />
+
+            <input
+              type="number"
+              placeholder="Age"
+              className="w-full p-4 border rounded-xl mb-4"
+            />
 
             <select className="w-full p-4 border rounded-xl mb-4">
               <option>Window Seat</option>
@@ -87,8 +106,8 @@ function FlightCard({ airline, time, duration, price, stops }) {
             <div className="flex gap-4">
               <button
                 onClick={() => {
-                  alert("🎉 Booking Confirmed Successfully!");
                   setShowModal(false);
+                  navigate("/booking-success");
                 }}
                 className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-bold"
               >
