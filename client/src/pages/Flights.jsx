@@ -39,10 +39,10 @@ function Flights() {
       flight.from.toLowerCase() === from.toLowerCase() &&
       flight.to.toLowerCase() === to.toLowerCase();
 
-    const matchDepartureDate = flight.date === selectedDeparture;
+    const matchDepartureDate = Boolean(selectedDeparture);
 
-    const matchReturnDate =
-      tripType !== "roundtrip" || flight.returnDate === selectedReturnDate;
+const matchReturnDate =
+  tripType !== "roundtrip" || Boolean(selectedReturnDate);
 
     const matchPrice = flight.price <= price;
     const matchAirline = airline === "All" || flight.airline === airline;

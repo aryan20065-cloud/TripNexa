@@ -1,79 +1,42 @@
-const flights = [
-  {
-    id: 1,
-    flightNumber: "6E203",
-    logo: "🔵",
-    airline: "IndiGo",
-    from: "Delhi, India",
-    to: "Mumbai, India",
-    date: "2026-06-26",
-    returnDate: "2026-06-30",
-    departure: "08:30",
-    arrival: "10:45",
-    duration: "2h 15m",
-    stops: "Non Stop",
-    price: 4599,
-  },
-  {
-    id: 2,
-    flightNumber: "AI302",
-    logo: "🇮🇳",
-    airline: "Air India",
-    from: "Delhi, India",
-    to: "Dubai, UAE",
-    date: "2026-06-27",
-    returnDate: "2026-07-02",
-    departure: "11:15",
-    arrival: "14:20",
-    duration: "3h 35m",
-    stops: "Non Stop",
-    price: 12999,
-  },
-  {
-    id: 3,
-    flightNumber: "UK808",
-    logo: "⭐",
-    airline: "Vistara",
-    from: "Mumbai, India",
-    to: "Singapore",
-    date: "2026-06-28",
-    returnDate: "2026-07-03",
-    departure: "15:00",
-    arrival: "22:10",
-    duration: "5h 40m",
-    stops: "1 Stop",
-    price: 18999,
-  },
-  {
-    id: 4,
-    flightNumber: "QP145",
-    logo: "🟣",
-    airline: "Akasa Air",
-    from: "Bangalore, India",
-    to: "Goa, India",
-    date: "2026-06-29",
-    returnDate: "2026-07-04",
-    departure: "18:00",
-    arrival: "19:15",
-    duration: "1h 15m",
-    stops: "Non Stop",
-    price: 3899,
-  },
-  {
-    id: 5,
-    flightNumber: "EK511",
-    logo: "🔴",
-    airline: "Emirates",
-    from: "Delhi, India",
-    to: "London, UK",
-    date: "2026-06-30",
-    returnDate: "2026-07-05",
-    departure: "02:30",
-    arrival: "12:45",
-    duration: "10h 15m",
-    stops: "1 Stop",
-    price: 45999,
-  },
+import cities from "./cities";
+
+const airlines = [
+  { airline: "IndiGo", logo: "🔵", code: "6E", stops: "Non Stop", base: 4500 },
+  { airline: "Air India", logo: "🇮🇳", code: "AI", stops: "1 Stop", base: 6500 },
+  { airline: "Vistara", logo: "⭐", code: "UK", stops: "Non Stop", base: 7000 },
+  { airline: "Emirates", logo: "🔴", code: "EK", stops: "1 Stop", base: 12000 },
 ];
+
+const times = [
+  ["06:30", "08:45", "2h 15m"],
+  ["10:15", "12:40", "2h 25m"],
+  ["15:00", "17:20", "2h 20m"],
+  ["20:30", "23:00", "2h 30m"],
+];
+
+const flights = [];
+
+cities.forEach((from, fromIndex) => {
+  cities.forEach((to, toIndex) => {
+    if (from === to) return;
+
+    airlines.forEach((air, index) => {
+      flights.push({
+        id: flights.length + 1,
+        flightNumber: `${air.code}${200 + fromIndex * 10 + toIndex + index}`,
+        logo: air.logo,
+        airline: air.airline,
+        from,
+        to,
+        departure: times[index][0],
+        arrival: times[index][1],
+        duration: times[index][2],
+        stops: air.stops,
+        price: air.base + Math.abs(fromIndex - toIndex) * 900,
+        operatesDaily: true,
+      });
+    });
+  });
+});
 
 export default flights;
