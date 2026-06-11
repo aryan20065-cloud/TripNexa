@@ -107,7 +107,7 @@ function FlightCard({ airline, time, duration, price, stops }) {
               <button
                 onClick={() => {
                   setShowModal(false);
-                  navigate("/booking-success");
+                  navigate("/payment");
                 }}
                 className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-bold"
               >
