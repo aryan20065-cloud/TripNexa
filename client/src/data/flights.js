@@ -2,6 +2,8 @@ const flights = [
   {
     id: 1,
     airline: "IndiGo",
+    from: "Delhi",
+    to: "Mumbai",
     departure: "08:30",
     arrival: "10:45",
     duration: "2h 15m",
@@ -11,6 +13,8 @@ const flights = [
   {
     id: 2,
     airline: "Air India",
+    from: "Delhi",
+    to: "Bangalore",
     departure: "11:15",
     arrival: "13:40",
     duration: "2h 25m",
@@ -20,6 +24,8 @@ const flights = [
   {
     id: 3,
     airline: "Vistara",
+    from: "Delhi",
+    to: "Goa",
     departure: "15:00",
     arrival: "17:20",
     duration: "2h 20m",
@@ -29,6 +35,8 @@ const flights = [
   {
     id: 4,
     airline: "Akasa Air",
+    from: "Mumbai",
+    to: "Chennai",
     departure: "18:00",
     arrival: "20:15",
     duration: "2h 15m",
