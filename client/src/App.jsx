@@ -4,6 +4,8 @@ import PopularDestinations from "./components/sections/PopularDestinations";
 import Offers from "./components/sections/Offers";
 import AIPlanner from "./components/sections/AIPlanner";
 import TrendingOffers from "./components/sections/TrendingOffers";
+import WhyChooseUs from "./components/sections/WhyChooseUs";
+
 function App() {
   return (
     <div>
@@ -12,24 +14,21 @@ function App() {
 
         <div className="flex flex-col items-center justify-center min-h-[85vh] pt-32">
           <div className="text-center text-white">
-            <h1 className="text-7xl font-bold mb-6">
-              Explore the World
-            </h1>
+            <h1 className="text-7xl font-bold mb-6">Explore the World</h1>
 
-            <p className="text-2xl opacity-90">
-              AI Powered Travel Platform
-            </p>
+            <p className="text-2xl opacity-90">AI Powered Travel Platform</p>
 
             <SearchBox />
           </div>
         </div>
       </section>
 
+      <TrendingOffers />
       <PopularDestinations />
       <Offers />
       <AIPlanner />
-      <TrendingOffers />    
-      </div>
+      <WhyChooseUs />
+    </div>
   );
 }
 
