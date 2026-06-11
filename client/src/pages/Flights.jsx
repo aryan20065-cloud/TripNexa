@@ -2,8 +2,10 @@ import { useState } from "react";
 import Navbar from "../components/layout/Navbar";
 import FlightSearch from "../components/flights/FlightSearch";
 import FlightCard from "../components/flights/FlightCard";
-import FlightFilters from "../components/flights/FlightFilters";
 import FlightSort from "../components/flights/FlightSort";
+import PriceFilter from "../components/flights/PriceFilter";
+import AirlineFilter from "../components/flights/AirlineFilter";
+import StopsFilter from "../components/flights/StopsFilter";
 import flights from "../data/flights";
 
 function Flights() {
@@ -11,11 +13,24 @@ function Flights() {
   const [to, setTo] = useState("");
   const [sortBy, setSortBy] = useState("price");
 
+  const [price, setPrice] = useState(50000);
+  const [airline, setAirline] = useState("All");
+  const [stops, setStops] = useState("All");
+
   const filteredFlights = flights.filter((flight) => {
-    return (
+    const matchRoute =
       flight.from.toLowerCase().includes(from.toLowerCase()) &&
-      flight.to.toLowerCase().includes(to.toLowerCase())
-    );
+      flight.to.toLowerCase().includes(to.toLowerCase());
+
+    const matchPrice = flight.price <= price;
+
+    const matchAirline =
+      airline === "All" || flight.airline === airline;
+
+    const matchStops =
+      stops === "All" || flight.stops === stops;
+
+    return matchRoute && matchPrice && matchAirline && matchStops;
   });
 
   const sortedFlights = [...filteredFlights].sort((a, b) => {
@@ -33,7 +48,7 @@ function Flights() {
         <div className="pt-36 text-center text-white">
           <h1 className="text-6xl font-bold mb-4">✈ Book Your Flight</h1>
           <p className="text-xl opacity-90">
-            Find the best deals from thousands of flights
+            Find domestic and international flights at the best prices
           </p>
         </div>
       </section>
@@ -43,11 +58,13 @@ function Flights() {
       </div>
 
       <section className="max-w-7xl mx-auto py-16 px-6">
-        <h2 className="text-4xl font-bold mb-8">Today's Best Flights</h2>
+        <h2 className="text-4xl font-bold mb-8">Available Flights</h2>
 
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <FlightFilters />
+            <PriceFilter price={price} setPrice={setPrice} />
+            <AirlineFilter airline={airline} setAirline={setAirline} />
+            <StopsFilter stops={stops} setStops={setStops} />
           </div>
 
           <div className="md:col-span-3">
@@ -71,7 +88,7 @@ function Flights() {
                     No flights found
                   </h3>
                   <p className="text-slate-500 mt-3">
-                    Try Delhi to Mumbai, Delhi to Goa, or Mumbai to Chennai.
+                    Try increasing your price range or changing filters.
                   </p>
                 </div>
               )}
