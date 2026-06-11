@@ -3,20 +3,18 @@ import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-black/20 border-b border-white/20">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-5">
+      <div className="max-w-[1600px] mx-auto flex items-center justify-between px-10 py-5">
 
         {/* Logo */}
-
         <Link
           to="/"
-          className="text-4xl font-bold text-white hover:text-cyan-300 transition"
+          className="text-4xl font-bold text-white hover:text-cyan-300 transition whitespace-nowrap"
         >
           ✈ TripNexa
         </Link>
 
         {/* Navigation */}
-
-        <div className="hidden lg:flex items-center gap-7 text-white font-semibold">
+        <div className="hidden lg:flex items-center gap-8 text-white font-semibold whitespace-nowrap">
 
           <Link to="/flights" className="hover:text-cyan-300 transition">
             Flights
@@ -49,21 +47,22 @@ function Navbar() {
         </div>
 
         {/* Right Side */}
-
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center whitespace-nowrap gap-8">
 
           <Link
             to="/wishlist"
-            className="text-white hover:text-red-400 transition font-semibold"
+            className="flex items-center gap-2 text-white font-semibold hover:text-red-400 transition"
           >
-            ❤️ Wishlist
+            <span className="text-xl">❤️</span>
+            <span>Wishlist</span>
           </Link>
 
           <Link
             to="/mytrips"
-            className="text-white hover:text-cyan-300 transition font-semibold"
+            className="flex items-center gap-2 text-white font-semibold hover:text-cyan-300 transition"
           >
-            🧳 My Trips
+            <span className="text-xl">🧳</span>
+            <span>My Trips</span>
           </Link>
 
           <Link
@@ -81,15 +80,10 @@ function Navbar() {
           </Link>
 
           <select className="bg-white rounded-full px-4 py-3 font-semibold outline-none cursor-pointer">
-
             <option>🇮🇳 INR</option>
-
             <option>🇺🇸 USD</option>
-
             <option>🇪🇺 EUR</option>
-
             <option>🇦🇪 AED</option>
-
           </select>
 
         </div>
