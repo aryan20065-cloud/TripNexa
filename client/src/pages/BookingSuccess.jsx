@@ -1,6 +1,10 @@
 import Navbar from "../components/layout/Navbar";
 
 function BookingSuccess() {
+  const downloadTicket = () => {
+    window.print();
+  };
+
   return (
     <div className="min-h-screen bg-slate-100">
       <section className="bg-gradient-to-r from-blue-700 to-purple-700 pb-28">
@@ -21,10 +25,14 @@ function BookingSuccess() {
           <p><b>Passenger:</b> Aryan Sharma</p>
           <p><b>Flight:</b> Delhi → Mumbai</p>
           <p><b>Class:</b> Economy</p>
+          <p><b>Payment:</b> Paid</p>
         </div>
 
-        <button className="mt-8 w-full bg-blue-600 text-white py-4 rounded-xl font-bold">
-          Download Ticket
+        <button
+          onClick={downloadTicket}
+          className="mt-8 w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition"
+        >
+          Download / Print Ticket
         </button>
       </div>
     </div>
