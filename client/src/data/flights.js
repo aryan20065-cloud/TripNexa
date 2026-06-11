@@ -1,6 +1,7 @@
 const flights = [
   {
     id: 1,
+    logo: "🔵",
     airline: "IndiGo",
     from: "Delhi, India",
     to: "Mumbai, India",
@@ -9,10 +10,10 @@ const flights = [
     duration: "2h 15m",
     stops: "Non Stop",
     price: 4599,
-    type: "Domestic",
   },
   {
     id: 2,
+    logo: "🇮🇳",
     airline: "Air India",
     from: "Delhi, India",
     to: "Dubai, UAE",
@@ -21,10 +22,10 @@ const flights = [
     duration: "3h 35m",
     stops: "Non Stop",
     price: 12999,
-    type: "International",
   },
   {
     id: 3,
+    logo: "⭐",
     airline: "Vistara",
     from: "Mumbai, India",
     to: "Singapore",
@@ -33,10 +34,10 @@ const flights = [
     duration: "5h 40m",
     stops: "1 Stop",
     price: 18999,
-    type: "International",
   },
   {
     id: 4,
+    logo: "🟣",
     airline: "Akasa Air",
     from: "Bangalore, India",
     to: "Goa, India",
@@ -45,10 +46,10 @@ const flights = [
     duration: "1h 15m",
     stops: "Non Stop",
     price: 3899,
-    type: "Domestic",
   },
   {
     id: 5,
+    logo: "🔴",
     airline: "Emirates",
     from: "Delhi, India",
     to: "London, UK",
@@ -57,7 +58,6 @@ const flights = [
     duration: "10h 15m",
     stops: "1 Stop",
     price: 45999,
-    type: "International",
   },
 ];
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WishlistButton from "./WishlistButton";
 
-function FlightCard({ airline, time, duration, price, stops }) {
+function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
   const [showModal, setShowModal] = useState(false);
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);

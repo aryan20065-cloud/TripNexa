@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import FlightSearch from "../components/flights/FlightSearch";
 import FlightCard from "../components/flights/FlightCard";
@@ -9,8 +10,12 @@ import StopsFilter from "../components/flights/StopsFilter";
 import flights from "../data/flights";
 
 function Flights() {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [searchParams] = useSearchParams();
+
+  const searched = searchParams.get("searched") === "true";
+
+  const [from, setFrom] = useState(searchParams.get("from") || "");
+  const [to, setTo] = useState(searchParams.get("to") || "");
   const [sortBy, setSortBy] = useState("price");
 
   const [price, setPrice] = useState(50000);
@@ -23,12 +28,8 @@ function Flights() {
       flight.to.toLowerCase().includes(to.toLowerCase());
 
     const matchPrice = flight.price <= price;
-
-    const matchAirline =
-      airline === "All" || flight.airline === airline;
-
-    const matchStops =
-      stops === "All" || flight.stops === stops;
+    const matchAirline = airline === "All" || flight.airline === airline;
+    const matchStops = stops === "All" || flight.stops === stops;
 
     return matchRoute && matchPrice && matchAirline && matchStops;
   });
@@ -48,7 +49,7 @@ function Flights() {
         <div className="pt-36 text-center text-white">
           <h1 className="text-6xl font-bold mb-4">✈ Book Your Flight</h1>
           <p className="text-xl opacity-90">
-            Find domestic and international flights at the best prices
+            Search domestic and international flights
           </p>
         </div>
       </section>
@@ -60,41 +61,55 @@ function Flights() {
       <section className="max-w-7xl mx-auto py-16 px-6">
         <h2 className="text-4xl font-bold mb-8">Available Flights</h2>
 
-        <div className="grid md:grid-cols-4 gap-8">
-          <div>
-            <PriceFilter price={price} setPrice={setPrice} />
-            <AirlineFilter airline={airline} setAirline={setAirline} />
-            <StopsFilter stops={stops} setStops={setStops} />
+        {!searched && !from && !to ? (
+          <div className="bg-white rounded-3xl p-12 text-center shadow-xl">
+            <h3 className="text-3xl font-bold text-slate-800">
+              Search flights to see results
+            </h3>
+            <p className="text-slate-500 mt-3">
+              Select From, To, trip type, date and special fare.
+            </p>
           </div>
+        ) : (
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <PriceFilter price={price} setPrice={setPrice} />
+              <AirlineFilter airline={airline} setAirline={setAirline} />
+              <StopsFilter stops={stops} setStops={setStops} />
+            </div>
 
-          <div className="md:col-span-3">
-            <FlightSort sortBy={sortBy} setSortBy={setSortBy} />
+            <div className="md:col-span-3">
+              <FlightSort sortBy={sortBy} setSortBy={setSortBy} />
 
-            <div className="space-y-6">
-              {sortedFlights.length > 0 ? (
-                sortedFlights.map((flight) => (
-                  <FlightCard
-                    key={flight.id}
-                    airline={flight.airline}
-                    time={`${flight.departure} → ${flight.arrival}`}
-                    duration={flight.duration}
-                    price={`₹${flight.price}`}
-                    stops={flight.stops}
-                  />
-                ))
-              ) : (
-                <div className="bg-white rounded-3xl p-10 text-center shadow-xl">
-                  <h3 className="text-3xl font-bold text-slate-800">
-                    No flights found
-                  </h3>
-                  <p className="text-slate-500 mt-3">
-                    Try increasing your price range or changing filters.
-                  </p>
-                </div>
-              )}
+              <div className="space-y-6">
+                {sortedFlights.length > 0 ? (
+                  sortedFlights.map((flight) => (
+                    <FlightCard
+                      key={flight.id}
+                      logo={flight.logo}
+                      airline={flight.airline}
+                      from={flight.from}
+                      to={flight.to}
+                      time={`${flight.departure} → ${flight.arrival}`}
+                      duration={flight.duration}
+                      price={`₹${flight.price}`}
+                      stops={flight.stops}
+                    />
+                  ))
+                ) : (
+                  <div className="bg-white rounded-3xl p-10 text-center shadow-xl">
+                    <h3 className="text-3xl font-bold text-slate-800">
+                      No flights found
+                    </h3>
+                    <p className="text-slate-500 mt-3">
+                      Try changing city, country, price or filters.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </section>
     </div>
   );
