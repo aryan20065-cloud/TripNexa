@@ -13,6 +13,9 @@ function SearchBox() {
   const [travellers, setTravellers] = useState(1);
   const [fare, setFare] = useState("Regular");
 
+  const inputClass =
+    "w-full h-16 px-4 text-lg bg-white text-slate-900 border border-gray-300 rounded-2xl outline-none focus:ring-2 focus:ring-cyan-400";
+
   const services = [
     { icon: "✈", label: "Flights", path: "/flights" },
     { icon: "🏨", label: "Hotels", path: "/hotels" },
@@ -26,7 +29,13 @@ function SearchBox() {
     { icon: "🛡", label: "Insurance", path: "/insurance" },
   ];
 
-  const fares = ["Regular", "Student", "Senior Citizen", "Armed Forces", "Doctors & Nurses"];
+  const fares = [
+    "Regular",
+    "Student",
+    "Senior Citizen",
+    "Armed Forces",
+    "Doctors & Nurses",
+  ];
 
   const swapCities = () => {
     setFrom(to);
@@ -34,6 +43,26 @@ function SearchBox() {
   };
 
   const handleSearch = () => {
+    if (!from || !to) {
+      alert("Please select From and To locations.");
+      return;
+    }
+
+    if (from === to) {
+      alert("From and To locations cannot be the same.");
+      return;
+    }
+
+    if (!departure) {
+      alert("Please select a departure date.");
+      return;
+    }
+
+    if (tripType === "roundtrip" && !returnDate) {
+      alert("Please select a return date.");
+      return;
+    }
+
     const params = new URLSearchParams({
       searched: "true",
       tripType,
@@ -41,7 +70,7 @@ function SearchBox() {
       to,
       departure,
       returnDate,
-      travellers,
+      travellers: String(travellers),
       fare,
     });
 
@@ -71,9 +100,12 @@ function SearchBox() {
         ].map(([value, label]) => (
           <button
             key={value}
+            type="button"
             onClick={() => setTripType(value)}
-            className={`px-6 py-3 rounded-full font-bold ${
-              tripType === value ? "bg-cyan-400 text-slate-900" : "bg-white text-slate-800"
+            className={`px-6 py-3 rounded-full font-bold transition ${
+              tripType === value
+                ? "bg-cyan-400 text-slate-900"
+                : "bg-white text-slate-800"
             }`}
           >
             {label}
@@ -82,54 +114,103 @@ function SearchBox() {
       </div>
 
       <div className="grid md:grid-cols-6 gap-4">
-        <select value={from} onChange={(e) => setFrom(e.target.value)} className="p-4 rounded-2xl outline-none">
+        <select
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+          className={inputClass}
+        >
           <option value="">From</option>
-          {cities.map((city) => <option key={city}>{city}</option>)}
+          {cities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
         </select>
 
-        <button onClick={swapCities} className="bg-white rounded-2xl font-bold text-blue-600 text-2xl">
+        <button
+          type="button"
+          onClick={swapCities}
+          className="h-16 bg-white rounded-2xl font-bold text-blue-600 text-3xl hover:bg-cyan-300 transition"
+        >
           ⇄
         </button>
 
-        <select value={to} onChange={(e) => setTo(e.target.value)} className="p-4 rounded-2xl outline-none">
+        <select
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+          className={inputClass}
+        >
           <option value="">To</option>
-          {cities.map((city) => <option key={city}>{city}</option>)}
+          {cities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
         </select>
 
-        <input value={departure} onChange={(e) => setDeparture(e.target.value)} className="p-4 rounded-2xl outline-none" type="date" />
+        <input
+          value={departure}
+          onChange={(e) => setDeparture(e.target.value)}
+          className={inputClass}
+          type="date"
+        />
 
         {tripType === "roundtrip" ? (
-          <input value={returnDate} onChange={(e) => setReturnDate(e.target.value)} className="p-4 rounded-2xl outline-none" type="date" />
+          <input
+            value={returnDate}
+            onChange={(e) => setReturnDate(e.target.value)}
+            className={inputClass}
+            type="date"
+          />
         ) : (
-          <div className="p-4 rounded-2xl bg-white text-slate-400">Add Return</div>
+          <div className="h-16 px-4 flex items-center rounded-2xl bg-white text-slate-400 text-lg">
+            Add Return
+          </div>
         )}
 
-        <input value={travellers} onChange={(e) => setTravellers(e.target.value)} className="p-4 rounded-2xl outline-none" type="number" min="1" placeholder="Travellers" />
+        <input
+          value={travellers}
+          onChange={(e) => setTravellers(e.target.value)}
+          className={inputClass}
+          type="number"
+          min="1"
+          placeholder="Travellers"
+        />
       </div>
 
       {tripType === "multicity" && (
-        <div className="mt-4 grid md:grid-cols-2 gap-4">
-          <select className="p-4 rounded-2xl outline-none">
+        <div className="mt-4 grid md:grid-cols-3 gap-4">
+          <select className={inputClass}>
             <option>Second From City</option>
-            {cities.map((city) => <option key={city}>{city}</option>)}
+            {cities.map((city) => (
+              <option key={city}>{city}</option>
+            ))}
           </select>
 
-          <select className="p-4 rounded-2xl outline-none">
+          <select className={inputClass}>
             <option>Second To City</option>
-            {cities.map((city) => <option key={city}>{city}</option>)}
+            {cities.map((city) => (
+              <option key={city}>{city}</option>
+            ))}
           </select>
+
+          <input className={inputClass} type="date" />
         </div>
       )}
 
       <div className="mt-6">
         <h3 className="text-white font-bold mb-3">SPECIAL FARES</h3>
+
         <div className="flex flex-wrap gap-3">
           {fares.map((item) => (
             <button
               key={item}
+              type="button"
               onClick={() => setFare(item)}
-              className={`px-5 py-3 rounded-xl font-semibold ${
-                fare === item ? "bg-cyan-400 text-slate-900" : "bg-white text-blue-600"
+              className={`px-5 py-3 rounded-xl font-semibold transition ${
+                fare === item
+                  ? "bg-cyan-400 text-slate-900"
+                  : "bg-white text-blue-600"
               }`}
             >
               {item}
@@ -144,13 +225,17 @@ function SearchBox() {
           Add Price Drop Protection
         </label>
 
-        <Link to="/flight-tracker" className="bg-white text-slate-900 p-4 rounded-xl font-semibold hover:bg-cyan-300">
+        <Link
+          to="/flight-tracker"
+          className="bg-white text-slate-900 p-4 rounded-xl font-semibold hover:bg-cyan-300"
+        >
           🛫 Flight Tracker
         </Link>
       </div>
 
       <div className="text-center mt-8">
         <button
+          type="button"
           onClick={handleSearch}
           className="inline-block bg-cyan-400 text-slate-900 px-20 py-4 rounded-full text-2xl font-bold hover:scale-105 transition"
         >
