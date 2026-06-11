@@ -6,6 +6,15 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
   const [showModal, setShowModal] = useState(false);
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
+
+  const [passengers, setPassengers] = useState([
+    { name: "", age: "", seat: "Seat 12A - Window" },
+  ]);
+
+  const [meal, setMeal] = useState("Vegetarian Meal");
+  const [baggage, setBaggage] = useState("15kg Included");
+  const [travelClass, setTravelClass] = useState("Economy Class");
+
   const navigate = useNavigate();
 
   const airlineLogo = {
@@ -16,10 +25,37 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
     Emirates: "🔴",
   };
 
-  const applyCoupon = () => {
-    if (coupon.toUpperCase() === "TRIP500") setDiscount(500);
-    else alert("Invalid Coupon");
+  const addPassenger = () => {
+    setPassengers([
+      ...passengers,
+      { name: "", age: "", seat: "Seat 12A - Window" },
+    ]);
   };
+
+  const removePassenger = (index) => {
+    if (passengers.length === 1) return;
+    setPassengers(passengers.filter((_, i) => i !== index));
+  };
+
+  const updatePassenger = (index, field, value) => {
+    const updated = [...passengers];
+    updated[index][field] = value;
+    setPassengers(updated);
+  };
+
+  const applyCoupon = () => {
+    if (coupon.toUpperCase() === "TRIP500") {
+      setDiscount(500);
+    } else if (coupon.toUpperCase() === "WELCOME10") {
+      setDiscount(1000);
+    } else {
+      setDiscount(0);
+      alert("Invalid Coupon. Try TRIP500 or WELCOME10");
+    }
+  };
+
+  const numericPrice = Number(String(price).replace("₹", "").replace(",", ""));
+  const totalAmount = Math.max(numericPrice * passengers.length - discount, 0);
 
   return (
     <>
@@ -28,12 +64,25 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
           <div>
             <div className="flex items-center gap-4">
               <WishlistButton />
-              <div className="text-4xl">{airlineLogo[airline] || "✈️"}</div>
+
+              <div className="text-4xl">
+                {logo || airlineLogo[airline] || "✈️"}
+              </div>
 
               <div>
-                <h3 className="text-3xl font-bold text-blue-700">{airline}</h3>
+                <h3 className="text-3xl font-bold text-blue-700">
+                  {airline}
+                </h3>
+
+                <p className="text-sm text-slate-500">
+                  {from} → {to}
+                </p>
+
                 <p className="text-gray-500">{stops}</p>
-                <p className="text-yellow-500 font-bold">⭐ 4.8 Rating</p>
+
+                <p className="text-yellow-500 font-bold">
+                  ⭐ 4.8 Rating
+                </p>
               </div>
             </div>
 
@@ -41,11 +90,17 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
               <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold text-sm">
                 Best Price
               </span>
+
               <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-bold text-sm">
                 15kg Baggage
               </span>
+
               <span className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full font-bold text-sm">
                 Free Meal
+              </span>
+
+              <span className="bg-orange-100 text-orange-700 px-4 py-2 rounded-full font-bold text-sm">
+                Refundable
               </span>
             </div>
           </div>
@@ -53,11 +108,19 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
           <div className="text-center">
             <h2 className="text-2xl font-bold">{time}</h2>
             <p className="text-gray-500 mt-2">{duration}</p>
-            <p className="text-orange-500 font-bold mt-2">Only 3 seats left</p>
+            <p className="text-orange-500 font-bold mt-2">
+              Only 3 seats left
+            </p>
           </div>
 
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-green-600">{price}</h2>
+            <h2 className="text-3xl font-bold text-green-600">
+              {price}
+            </h2>
+
+            <p className="text-sm text-slate-500 mt-1">
+              per traveller
+            </p>
 
             <button
               onClick={() => setShowModal(true)}
@@ -71,55 +134,154 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
 
       {showModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-3xl p-8 w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-3xl p-8 w-full max-w-3xl shadow-2xl max-h-[90vh] overflow-y-auto">
             <h2 className="text-3xl font-bold text-center mb-6">
               ✈ Confirm Booking
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-4 mb-6">
-              <p><strong>Airline:</strong> {airline}</p>
-              <p><strong>Time:</strong> {time}</p>
-              <p><strong>Duration:</strong> {duration}</p>
-              <p><strong>Price:</strong> {price}</p>
+            <div className="grid md:grid-cols-2 gap-4 mb-6 bg-slate-50 p-5 rounded-2xl">
+              <p>
+                <strong>Airline:</strong> {airline}
+              </p>
+
+              <p>
+                <strong>Route:</strong> {from} → {to}
+              </p>
+
+              <p>
+                <strong>Time:</strong> {time}
+              </p>
+
+              <p>
+                <strong>Duration:</strong> {duration}
+              </p>
+
+              <p>
+                <strong>Price:</strong> {price} / traveller
+              </p>
+
+              <p>
+                <strong>Stops:</strong> {stops}
+              </p>
             </div>
 
-            <input className="w-full p-4 border rounded-xl mb-4" placeholder="Passenger Name" />
-            <input className="w-full p-4 border rounded-xl mb-4" type="number" placeholder="Age" />
+            <h3 className="text-2xl font-bold mb-4">
+              Passenger Details
+            </h3>
 
-            <select className="w-full p-4 border rounded-xl mb-4">
-              <option>Seat 12A - Window</option>
-              <option>Seat 12B - Middle</option>
-              <option>Seat 12C - Aisle</option>
-              <option>Seat 14A - Window</option>
-            </select>
+            <div className="space-y-5">
+              {passengers.map((passenger, index) => (
+                <div
+                  key={index}
+                  className="border rounded-2xl p-5 bg-slate-50"
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="font-bold">
+                      Passenger {index + 1}
+                    </h4>
 
-            <select className="w-full p-4 border rounded-xl mb-4">
-              <option>Vegetarian Meal</option>
-              <option>Non-Vegetarian Meal</option>
-              <option>Vegan Meal</option>
-              <option>Jain Meal</option>
-            </select>
+                    {passengers.length > 1 && (
+                      <button
+                        onClick={() => removePassenger(index)}
+                        className="text-red-600 font-bold"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
 
-            <select className="w-full p-4 border rounded-xl mb-4">
-              <option>15kg Included</option>
-              <option>20kg + ₹300</option>
-              <option>25kg + ₹600</option>
-              <option>30kg + ₹900</option>
-            </select>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <input
+                      value={passenger.name}
+                      onChange={(e) =>
+                        updatePassenger(index, "name", e.target.value)
+                      }
+                      className="p-4 border rounded-xl"
+                      placeholder="Passenger Name"
+                    />
 
-            <select className="w-full p-4 border rounded-xl mb-4">
-              <option>Economy Class</option>
-              <option>Premium Economy</option>
-              <option>Business Class</option>
-            </select>
+                    <input
+                      value={passenger.age}
+                      onChange={(e) =>
+                        updatePassenger(index, "age", e.target.value)
+                      }
+                      className="p-4 border rounded-xl"
+                      type="number"
+                      placeholder="Age"
+                    />
 
-            <div className="flex gap-3 mb-4">
+                    <select
+                      value={passenger.seat}
+                      onChange={(e) =>
+                        updatePassenger(index, "seat", e.target.value)
+                      }
+                      className="p-4 border rounded-xl"
+                    >
+                      <option>Seat 12A - Window</option>
+                      <option>Seat 12B - Middle</option>
+                      <option>Seat 12C - Aisle</option>
+                      <option>Seat 14A - Window</option>
+                      <option>Seat 14B - Middle</option>
+                      <option>Seat 14C - Aisle</option>
+                    </select>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={addPassenger}
+              className="mt-5 w-full bg-blue-100 text-blue-700 py-3 rounded-xl font-bold"
+            >
+              + Add More Passenger
+            </button>
+
+            <h3 className="text-2xl font-bold mt-8 mb-4">
+              Add-ons
+            </h3>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              <select
+                value={meal}
+                onChange={(e) => setMeal(e.target.value)}
+                className="p-4 border rounded-xl"
+              >
+                <option>Vegetarian Meal</option>
+                <option>Non-Vegetarian Meal</option>
+                <option>Vegan Meal</option>
+                <option>Jain Meal</option>
+              </select>
+
+              <select
+                value={baggage}
+                onChange={(e) => setBaggage(e.target.value)}
+                className="p-4 border rounded-xl"
+              >
+                <option>15kg Included</option>
+                <option>20kg + ₹300</option>
+                <option>25kg + ₹600</option>
+                <option>30kg + ₹900</option>
+              </select>
+
+              <select
+                value={travelClass}
+                onChange={(e) => setTravelClass(e.target.value)}
+                className="p-4 border rounded-xl"
+              >
+                <option>Economy Class</option>
+                <option>Premium Economy</option>
+                <option>Business Class</option>
+              </select>
+            </div>
+
+            <div className="flex gap-3 mt-6">
               <input
                 value={coupon}
                 onChange={(e) => setCoupon(e.target.value)}
                 className="flex-1 p-4 border rounded-xl"
-                placeholder="Coupon Code: TRIP500"
+                placeholder="Coupon Code: TRIP500 / WELCOME10"
               />
+
               <button
                 onClick={applyCoupon}
                 className="bg-green-600 text-white px-6 rounded-xl font-bold"
@@ -129,12 +291,38 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
             </div>
 
             {discount > 0 && (
-              <p className="text-green-600 font-bold mb-4">
+              <p className="text-green-600 font-bold mt-3">
                 ₹{discount} discount applied!
               </p>
             )}
 
-            <div className="flex gap-4">
+            <div className="mt-6 bg-slate-900 text-white p-5 rounded-2xl">
+              <p>
+                <strong>Passengers:</strong> {passengers.length}
+              </p>
+
+              <p>
+                <strong>Meal:</strong> {meal}
+              </p>
+
+              <p>
+                <strong>Baggage:</strong> {baggage}
+              </p>
+
+              <p>
+                <strong>Class:</strong> {travelClass}
+              </p>
+
+              <p>
+                <strong>Discount:</strong> ₹{discount}
+              </p>
+
+              <h3 className="text-2xl font-bold mt-3">
+                Total: ₹{totalAmount.toLocaleString()}
+              </h3>
+            </div>
+
+            <div className="flex gap-4 mt-6">
               <button
                 onClick={() => {
                   setShowModal(false);
