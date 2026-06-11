@@ -1,34 +1,24 @@
-import Navbar from "./components/layout/Navbar";
-import SearchBox from "./components/search/SearchBox";
-import PopularDestinations from "./components/sections/PopularDestinations";
-import Offers from "./components/sections/Offers";
-import AIPlanner from "./components/sections/AIPlanner";
-import TrendingOffers from "./components/sections/TrendingOffers";
-import WhyChooseUs from "./components/sections/WhyChooseUs";
+import { Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import Flights from "./pages/Flights";
+import Hotels from "./pages/Hotels";
+import Trains from "./pages/Trains";
+import Bus from "./pages/Bus";
+import Holidays from "./pages/Holidays";
+import Login from "./pages/Login";
 
 function App() {
   return (
-    <div>
-      <section className="min-h-screen pb-24 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700">
-        <Navbar />
-
-        <div className="flex flex-col items-center justify-center min-h-[85vh] pt-32">
-          <div className="text-center text-white">
-            <h1 className="text-7xl font-bold mb-6">Explore the World</h1>
-
-            <p className="text-2xl opacity-90">AI Powered Travel Platform</p>
-
-            <SearchBox />
-          </div>
-        </div>
-      </section>
-
-      <TrendingOffers />
-      <PopularDestinations />
-      <Offers />
-      <AIPlanner />
-      <WhyChooseUs />
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/flights" element={<Flights />} />
+      <Route path="/hotels" element={<Hotels />} />
+      <Route path="/trains" element={<Trains />} />
+      <Route path="/bus" element={<Bus />} />
+      <Route path="/holidays" element={<Holidays />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
   );
 }
 
