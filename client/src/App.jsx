@@ -3,6 +3,7 @@ import SearchBox from "./components/search/SearchBox";
 import PopularDestinations from "./components/sections/PopularDestinations";
 import Offers from "./components/sections/Offers";
 import AIPlanner from "./components/sections/AIPlanner";
+import TrendingOffers from "./components/sections/TrendingOffers";
 function App() {
   return (
     <div>
@@ -26,7 +27,8 @@ function App() {
 
       <PopularDestinations />
       <Offers />
-      <AIPlanner />    
+      <AIPlanner />
+      <TrendingOffers />    
       </div>
   );
 }
