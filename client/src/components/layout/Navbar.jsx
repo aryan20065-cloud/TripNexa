@@ -18,7 +18,7 @@ function Navbar() {
           <Link to="/cruise">Cruise</Link>
           <Link to="/insurance">Insurance</Link>
           <Link to="/wishlist"> Wishlist</Link>
-          <Link to="/mytrips">🧳 My Trips</Link>
+          <Link to="/mytrips"> My Trips</Link>
         </div>
 
         <div className="flex items-center gap-3">
