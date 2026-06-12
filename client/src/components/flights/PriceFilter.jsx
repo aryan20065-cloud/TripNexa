@@ -1,3 +1,4 @@
+import { formatPrice } from "../../utils/currency";
 function PriceFilter({ price, setPrice }) {
   return (
     <div className="bg-white rounded-2xl shadow p-6">
@@ -14,7 +15,7 @@ function PriceFilter({ price, setPrice }) {
       />
 
       <div className="mt-3 text-center font-bold text-blue-600">
-        ₹0 - ₹{price.toLocaleString()}
+        {formatPrice(0)} - {formatPrice(price)}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WishlistButton from "./WishlistButton";
-
+import { formatPrice } from "../../utils/currency";
 function FlightCard({
   flightNumber,
   logo,
@@ -157,7 +157,7 @@ function FlightCard({
 
           <div className="text-center">
             <h2 className="text-3xl font-bold text-green-600">
-              ₹{totalBeforeDiscount.toLocaleString()}
+              {formatPrice(totalBeforeDiscount)}
             </h2>
 
             <p className="text-sm text-slate-500 mt-1">
@@ -165,7 +165,7 @@ function FlightCard({
             </p>
 
             <p className="text-xs text-slate-400">
-              ₹{numericPrice.toLocaleString()} per traveller
+              {formatPrice(numericPrice)} per traveller
             </p>
 
             <button
@@ -337,7 +337,7 @@ function FlightCard({
 
             {discount > 0 && (
               <p className="text-green-600 font-bold mt-3">
-                ₹{discount} discount applied!
+                {formatPrice(discount)} discount applied!
               </p>
             )}
 

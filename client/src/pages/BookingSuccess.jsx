@@ -1,6 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
-
+import { formatPrice } from "../utils/currency";
 function BookingSuccess() {
   const { state } = useLocation();
 
@@ -38,7 +38,7 @@ function BookingSuccess() {
           <p><b>Class:</b> {state?.travelClass}</p>
           <p><b>Meal:</b> {state?.meal}</p>
           <p><b>Baggage:</b> {state?.baggage}</p>
-          <p><b>Total Paid:</b> ₹{Number(state?.totalAmount || 0).toLocaleString()}</p>
+          <p><b>Total Paid:</b> {formatPrice(Number(state?.totalAmount || 0))}
           <p><b>Payment:</b> Paid</p>
         </div>
 
