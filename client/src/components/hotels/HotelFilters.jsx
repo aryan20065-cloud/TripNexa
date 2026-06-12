@@ -3,39 +3,33 @@ function HotelFilter({
   setPrice,
   rating,
   setRating,
-  star,
-  setStar,
 }) {
   return (
-    <div className="space-y-6">
+    <div className="bg-white rounded-3xl shadow-lg p-6 space-y-6">
 
-      <div className="bg-white rounded-3xl shadow-lg p-6">
-
-        <h2 className="text-2xl font-bold mb-5">
+      <div>
+        <h3 className="text-2xl font-bold mb-4">
           💰 Price Range
-        </h2>
+        </h3>
 
         <input
           type="range"
           min="1000"
           max="50000"
-          step="500"
           value={price}
           onChange={(e) => setPrice(Number(e.target.value))}
           className="w-full"
         />
 
-        <p className="mt-4 text-xl font-bold text-blue-600">
-          ₹1,000 - ₹{price.toLocaleString()}
+        <p className="mt-3 font-bold">
+          ₹ {price}
         </p>
-
       </div>
 
-      <div className="bg-white rounded-3xl shadow-lg p-6">
-
-        <h2 className="text-2xl font-bold mb-5">
-          ⭐ Rating
-        </h2>
+      <div>
+        <h3 className="text-2xl font-bold mb-4">
+          ⭐ Minimum Rating
+        </h3>
 
         <select
           value={rating}
@@ -43,30 +37,10 @@ function HotelFilter({
           className="w-full border rounded-xl p-3"
         >
           <option value={0}>All Ratings</option>
-          <option value={3}>3+ Stars</option>
-          <option value={4}>4+ Stars</option>
-          <option value={5}>5 Stars</option>
+          <option value={3}>3 Star & Above</option>
+          <option value={4}>4 Star & Above</option>
+          <option value={5}>5 Star Only</option>
         </select>
-
-      </div>
-
-      <div className="bg-white rounded-3xl shadow-lg p-6">
-
-        <h2 className="text-2xl font-bold mb-5">
-          🏨 Hotel Category
-        </h2>
-
-        <select
-          value={star}
-          onChange={(e) => setStar(Number(e.target.value))}
-          className="w-full border rounded-xl p-3"
-        >
-          <option value={0}>All Hotels</option>
-          <option value={3}>3 Star</option>
-          <option value={4}>4 Star</option>
-          <option value={5}>5 Star Luxury</option>
-        </select>
-
       </div>
 
     </div>
