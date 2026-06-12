@@ -16,6 +16,7 @@ function Flights() {
   const tripType = searchParams.get("tripType") || "oneway";
   const selectedDeparture = searchParams.get("departure") || "";
   const selectedReturnDate = searchParams.get("returnDate") || "";
+  const travellerCount = Number(searchParams.get("travellers") || 1);
 
   const [from, setFrom] = useState(searchParams.get("from") || "");
   const [to, setTo] = useState(searchParams.get("to") || "");
@@ -124,7 +125,9 @@ function Flights() {
                       toCode={flight.toCode}
                       time={`${flight.departure} → ${flight.arrival}`}
                       duration={flight.duration}
-                      price={`₹${flight.price}`}
+                      price={`₹${flight.price * travellerCount}`}
+                      basePrice={flight.price}
+                      travellers={travellerCount}
                       stops={flight.stops}
                     />
                   ))

@@ -15,15 +15,23 @@ function FlightCard({
   time,
   duration,
   price,
+  basePrice,
+  travellers = 1,
   stops,
 }) {
+  const startingPassengers = Number(travellers) || 1;
+
   const [showModal, setShowModal] = useState(false);
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
 
-  const [passengers, setPassengers] = useState([
-    { name: "", age: "", seat: "Seat 12A - Window" },
-  ]);
+  const [passengers, setPassengers] = useState(
+    Array.from({ length: startingPassengers }, () => ({
+      name: "",
+      age: "",
+      seat: "Seat 12A - Window",
+    }))
+  );
 
   const [meal, setMeal] = useState("Vegetarian Meal");
   const [baggage, setBaggage] = useState("15kg Included");
@@ -72,8 +80,12 @@ function FlightCard({
     (p) => p.name.trim() !== "" && p.age.trim() !== "" && Number(p.age) > 0
   );
 
-  const numericPrice = Number(String(price).replace("₹", "").replace(",", ""));
-  const totalAmount = Math.max(numericPrice * passengers.length - discount, 0);
+  const numericPrice = Number(
+    basePrice || String(price).replace("₹", "").replace(",", "")
+  );
+
+  const totalBeforeDiscount = numericPrice * passengers.length;
+  const totalAmount = Math.max(totalBeforeDiscount - discount, 0);
 
   return (
     <>
@@ -120,12 +132,15 @@ function FlightCard({
               <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold text-sm">
                 Best Price
               </span>
+
               <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-bold text-sm">
                 15kg Baggage
               </span>
+
               <span className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full font-bold text-sm">
                 Free Meal
               </span>
+
               <span className="bg-orange-100 text-orange-700 px-4 py-2 rounded-full font-bold text-sm">
                 Refundable
               </span>
@@ -141,8 +156,17 @@ function FlightCard({
           </div>
 
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-green-600">{price}</h2>
-            <p className="text-sm text-slate-500 mt-1">per traveller</p>
+            <h2 className="text-3xl font-bold text-green-600">
+              ₹{totalBeforeDiscount.toLocaleString()}
+            </h2>
+
+            <p className="text-sm text-slate-500 mt-1">
+              for {passengers.length} traveller(s)
+            </p>
+
+            <p className="text-xs text-slate-400">
+              ₹{numericPrice.toLocaleString()} per traveller
+            </p>
 
             <button
               onClick={() => setShowModal(true)}
@@ -169,7 +193,7 @@ function FlightCard({
               <p><strong>Arrival Airport:</strong> {toAirport} ({toCode})</p>
               <p><strong>Time:</strong> {time}</p>
               <p><strong>Duration:</strong> {duration}</p>
-              <p><strong>Price:</strong> {price} / traveller</p>
+              <p><strong>Base Price:</strong> ₹{numericPrice.toLocaleString()} / traveller</p>
               <p><strong>Stops:</strong> {stops}</p>
             </div>
 
@@ -271,8 +295,6 @@ function FlightCard({
                 <option>Non-Vegetarian Meal</option>
                 <option>Vegan Meal</option>
                 <option>Jain Meal</option>
-                <option>No Meal </option>
-                
               </select>
 
               <select
@@ -324,6 +346,7 @@ function FlightCard({
               <p><strong>Meal:</strong> {meal}</p>
               <p><strong>Baggage:</strong> {baggage}</p>
               <p><strong>Class:</strong> {travelClass}</p>
+              <p><strong>Base Fare:</strong> ₹{numericPrice.toLocaleString()} × {passengers.length}</p>
               <p><strong>Discount:</strong> ₹{discount}</p>
 
               <h3 className="text-2xl font-bold mt-3">
