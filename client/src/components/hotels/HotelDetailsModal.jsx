@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { formatPrice } from "../../utils/currency";
 function HotelDetailsModal({ hotel, show, onClose }) {
   const navigate = useNavigate();
 
@@ -156,7 +156,7 @@ function HotelDetailsModal({ hotel, show, onClose }) {
         <div className="bg-slate-100 rounded-3xl p-6 mt-8">
 
           <h2 className="text-3xl font-bold text-green-600">
-            Total ₹{total.toLocaleString()}
+            Total {formatPrice(total)}
           </h2>
 
         </div>
