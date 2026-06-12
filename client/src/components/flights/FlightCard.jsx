@@ -2,7 +2,21 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WishlistButton from "./WishlistButton";
 
-function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
+function FlightCard({
+  flightNumber,
+  logo,
+  airline,
+  from,
+  to,
+  fromAirport,
+  fromCode,
+  toAirport,
+  toCode,
+  time,
+  duration,
+  price,
+  stops,
+}) {
   const [showModal, setShowModal] = useState(false);
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
@@ -78,13 +92,27 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
                   {airline}
                 </h3>
 
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-blue-600 font-semibold">
+                  Flight No: {flightNumber}
+                </p>
+
+                <p className="text-sm text-slate-700">
                   {from} → {to}
                 </p>
 
-                <p className="text-gray-500">{stops}</p>
+                <p className="text-xs text-gray-500">
+                  🛫 {fromCode} • {fromAirport}
+                </p>
 
-                <p className="text-yellow-500 font-bold">⭐ 4.8 Rating</p>
+                <p className="text-xs text-gray-500">
+                  🛬 {toCode} • {toAirport}
+                </p>
+
+                <p className="text-gray-500 mt-1">{stops}</p>
+
+                <p className="text-yellow-500 font-bold mt-1">
+                  ⭐ 4.8 Rating
+                </p>
               </div>
             </div>
 
@@ -139,11 +167,23 @@ function FlightCard({ logo, airline, from, to, time, duration, price, stops }) {
 
             <div className="grid md:grid-cols-2 gap-4 mb-6 bg-slate-50 p-5 rounded-2xl">
               <p>
+                <strong>Flight No:</strong> {flightNumber}
+              </p>
+
+              <p>
                 <strong>Airline:</strong> {airline}
               </p>
 
               <p>
                 <strong>Route:</strong> {from} → {to}
+              </p>
+
+              <p>
+                <strong>Departure Airport:</strong> {fromAirport} ({fromCode})
+              </p>
+
+              <p>
+                <strong>Arrival Airport:</strong> {toAirport} ({toCode})
               </p>
 
               <p>

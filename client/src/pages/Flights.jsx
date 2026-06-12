@@ -41,8 +41,8 @@ function Flights() {
 
     const matchDepartureDate = Boolean(selectedDeparture);
 
-const matchReturnDate =
-  tripType !== "roundtrip" || Boolean(selectedReturnDate);
+    const matchReturnDate =
+      tripType !== "roundtrip" || Boolean(selectedReturnDate);
 
     const matchPrice = flight.price <= price;
     const matchAirline = airline === "All" || flight.airline === airline;
@@ -118,6 +118,10 @@ const matchReturnDate =
                       airline={flight.airline}
                       from={flight.from}
                       to={flight.to}
+                      fromAirport={flight.fromAirport}
+                      fromCode={flight.fromCode}
+                      toAirport={flight.toAirport}
+                      toCode={flight.toCode}
                       time={`${flight.departure} → ${flight.arrival}`}
                       duration={flight.duration}
                       price={`₹${flight.price}`}

@@ -9,7 +9,7 @@ function FlightTracker() {
   const searchFlight = () => {
     const found = flights.find(
       (flight) =>
-        flight.flightNumber.toLowerCase() === flightNo.toLowerCase()
+        flight.flightNumber.toLowerCase() === flightNo.trim().toLowerCase()
     );
 
     setResult(found || "not-found");
@@ -48,7 +48,7 @@ function FlightTracker() {
           )}
 
           {result && result !== "not-found" && (
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-8">
               <div className="bg-green-50 rounded-2xl p-6">
                 <h2 className="text-2xl font-bold mb-4">Flight Status</h2>
 
@@ -56,45 +56,89 @@ function FlightTracker() {
                   🟢 On Time
                 </p>
 
-                <p className="mt-4">
-                  <b>Flight:</b> {result.flightNumber}
-                </p>
+                <div className="grid md:grid-cols-2 gap-4 mt-5">
+                  <p>
+                    <b>Flight Number:</b> {result.flightNumber}
+                  </p>
 
-                <p>
-                  <b>Airline:</b> {result.airline}
-                </p>
+                  <p>
+                    <b>Airline:</b> {result.airline}
+                  </p>
 
-                <p>
-                  <b>Route:</b> {result.from} → {result.to}
-                </p>
+                  <p>
+                    <b>Route:</b> {result.from} → {result.to}
+                  </p>
 
-                <p>
-                  <b>Date:</b> {result.date}
-                </p>
+                  <p>
+                    <b>Stops:</b> {result.stops}
+                  </p>
+                </div>
               </div>
 
-              <div className="bg-blue-50 rounded-2xl p-6">
-                <h2 className="text-2xl font-bold mb-4">Airport Details</h2>
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="bg-blue-50 rounded-2xl p-6">
+                  <h2 className="text-2xl font-bold mb-4">
+                    🛫 Departure Details
+                  </h2>
 
-                <p>
-                  <b>Departure:</b> {result.departure}
-                </p>
+                  <p>
+                    <b>City:</b> {result.from}
+                  </p>
 
-                <p>
-                  <b>Arrival:</b> {result.arrival}
-                </p>
+                  <p>
+                    <b>Airport:</b> {result.fromAirport}
+                  </p>
 
-                <p>
-                  <b>Gate:</b> A12
-                </p>
+                  <p>
+                    <b>Airport Code:</b> {result.fromCode}
+                  </p>
 
-                <p>
-                  <b>Terminal:</b> 2
-                </p>
+                  <p>
+                    <b>Departure Time:</b> {result.departure}
+                  </p>
 
-                <p>
-                  <b>Boarding:</b> 45 min before departure
-                </p>
+                  <p>
+                    <b>Gate:</b> A12
+                  </p>
+
+                  <p>
+                    <b>Terminal:</b> 2
+                  </p>
+
+                  <p>
+                    <b>Boarding:</b> 45 min before departure
+                  </p>
+                </div>
+
+                <div className="bg-purple-50 rounded-2xl p-6">
+                  <h2 className="text-2xl font-bold mb-4">
+                    🛬 Arrival Details
+                  </h2>
+
+                  <p>
+                    <b>City:</b> {result.to}
+                  </p>
+
+                  <p>
+                    <b>Airport:</b> {result.toAirport}
+                  </p>
+
+                  <p>
+                    <b>Airport Code:</b> {result.toCode}
+                  </p>
+
+                  <p>
+                    <b>Arrival Time:</b> {result.arrival}
+                  </p>
+
+                  <p>
+                    <b>Terminal:</b> 1
+                  </p>
+
+                  <p>
+                    <b>Baggage Belt:</b> B4
+                  </p>
+                </div>
               </div>
             </div>
           )}
