@@ -120,15 +120,12 @@ function FlightCard({
               <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold text-sm">
                 Best Price
               </span>
-
               <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-bold text-sm">
                 15kg Baggage
               </span>
-
               <span className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full font-bold text-sm">
                 Free Meal
               </span>
-
               <span className="bg-orange-100 text-orange-700 px-4 py-2 rounded-full font-bold text-sm">
                 Refundable
               </span>
@@ -145,7 +142,6 @@ function FlightCard({
 
           <div className="text-center">
             <h2 className="text-3xl font-bold text-green-600">{price}</h2>
-
             <p className="text-sm text-slate-500 mt-1">per traveller</p>
 
             <button
@@ -166,41 +162,15 @@ function FlightCard({
             </h2>
 
             <div className="grid md:grid-cols-2 gap-4 mb-6 bg-slate-50 p-5 rounded-2xl">
-              <p>
-                <strong>Flight No:</strong> {flightNumber}
-              </p>
-
-              <p>
-                <strong>Airline:</strong> {airline}
-              </p>
-
-              <p>
-                <strong>Route:</strong> {from} → {to}
-              </p>
-
-              <p>
-                <strong>Departure Airport:</strong> {fromAirport} ({fromCode})
-              </p>
-
-              <p>
-                <strong>Arrival Airport:</strong> {toAirport} ({toCode})
-              </p>
-
-              <p>
-                <strong>Time:</strong> {time}
-              </p>
-
-              <p>
-                <strong>Duration:</strong> {duration}
-              </p>
-
-              <p>
-                <strong>Price:</strong> {price} / traveller
-              </p>
-
-              <p>
-                <strong>Stops:</strong> {stops}
-              </p>
+              <p><strong>Flight No:</strong> {flightNumber}</p>
+              <p><strong>Airline:</strong> {airline}</p>
+              <p><strong>Route:</strong> {from} → {to}</p>
+              <p><strong>Departure Airport:</strong> {fromAirport} ({fromCode})</p>
+              <p><strong>Arrival Airport:</strong> {toAirport} ({toCode})</p>
+              <p><strong>Time:</strong> {time}</p>
+              <p><strong>Duration:</strong> {duration}</p>
+              <p><strong>Price:</strong> {price} / traveller</p>
+              <p><strong>Stops:</strong> {stops}</p>
             </div>
 
             <h3 className="text-2xl font-bold mb-4">Passenger Details</h3>
@@ -213,10 +183,7 @@ function FlightCard({
 
             <div className="space-y-5">
               {passengers.map((passenger, index) => (
-                <div
-                  key={index}
-                  className="border rounded-2xl p-5 bg-slate-50"
-                >
+                <div key={index} className="border rounded-2xl p-5 bg-slate-50">
                   <div className="flex justify-between items-center mb-4">
                     <h4 className="font-bold">Passenger {index + 1}</h4>
 
@@ -277,6 +244,21 @@ function FlightCard({
               + Add More Passenger
             </button>
 
+            <div className="mt-6 bg-white rounded-xl p-4 border shadow-sm">
+              <h3 className="font-bold text-xl mb-4 text-blue-700">
+                👥 Passenger Summary
+              </h3>
+
+              {passengers.map((p, index) => (
+                <div key={index} className="border-b last:border-b-0 py-3">
+                  <p><b>Passenger {index + 1}</b></p>
+                  <p>Name: {p.name || "-"}</p>
+                  <p>Age: {p.age || "-"}</p>
+                  <p>Seat: {p.seat}</p>
+                </div>
+              ))}
+            </div>
+
             <h3 className="text-2xl font-bold mt-8 mb-4">Add-ons</h3>
 
             <div className="grid md:grid-cols-3 gap-4">
@@ -289,6 +271,8 @@ function FlightCard({
                 <option>Non-Vegetarian Meal</option>
                 <option>Vegan Meal</option>
                 <option>Jain Meal</option>
+                <option>No Meal </option>
+                
               </select>
 
               <select
@@ -336,25 +320,11 @@ function FlightCard({
             )}
 
             <div className="mt-6 bg-slate-900 text-white p-5 rounded-2xl">
-              <p>
-                <strong>Passengers:</strong> {passengers.length}
-              </p>
-
-              <p>
-                <strong>Meal:</strong> {meal}
-              </p>
-
-              <p>
-                <strong>Baggage:</strong> {baggage}
-              </p>
-
-              <p>
-                <strong>Class:</strong> {travelClass}
-              </p>
-
-              <p>
-                <strong>Discount:</strong> ₹{discount}
-              </p>
+              <p><strong>Passengers:</strong> {passengers.length}</p>
+              <p><strong>Meal:</strong> {meal}</p>
+              <p><strong>Baggage:</strong> {baggage}</p>
+              <p><strong>Class:</strong> {travelClass}</p>
+              <p><strong>Discount:</strong> ₹{discount}</p>
 
               <h3 className="text-2xl font-bold mt-3">
                 Total: ₹{totalAmount.toLocaleString()}
@@ -366,7 +336,6 @@ function FlightCard({
                 disabled={!isPassengerDetailsValid}
                 onClick={() => {
                   if (!isPassengerDetailsValid) return;
-
                   setShowModal(false);
                   navigate("/payment");
                 }}
