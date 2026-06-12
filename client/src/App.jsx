@@ -12,7 +12,7 @@ import Payment from "./pages/Payment";
 import FlightTracker from "./pages/FlightTracker";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-
+import HotelBookingSuccess from "./pages/HotelBookingSuccess";
 function App() {
   return (
     <Routes>
@@ -28,7 +28,7 @@ function App() {
       <Route path="/flight-tracker" element={<FlightTracker />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
-      
+      <Route path="/hotel-booking-success" element={<HotelBookingSuccess />} />
     </Routes>
   );
 }
