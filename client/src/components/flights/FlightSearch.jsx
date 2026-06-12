@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import cities from "../../data/cities";
 
-function FlightSearch({ from, setFrom, to, setTo }) {
+function FlightSearch({ from, setFrom, to, setTo, travellers, setTravellers }) {
   const navigate = useNavigate();
 
   const [tripType, setTripType] = useState("oneway");
   const [departure, setDeparture] = useState("");
   const [returnDate, setReturnDate] = useState("");
-  const [travellers, setTravellers] = useState(1);
+  
   const [fare, setFare] = useState("Regular");
 
   const [multiFrom, setMultiFrom] = useState("");

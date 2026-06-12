@@ -16,12 +16,14 @@ function Flights() {
   const tripType = searchParams.get("tripType") || "oneway";
   const selectedDeparture = searchParams.get("departure") || "";
   const selectedReturnDate = searchParams.get("returnDate") || "";
-  const travellerCount = Number(searchParams.get("travellers") || 1);
 
   const [from, setFrom] = useState(searchParams.get("from") || "");
   const [to, setTo] = useState(searchParams.get("to") || "");
-  const [sortBy, setSortBy] = useState("price");
+  const [travellers, setTravellers] = useState(
+    Number(searchParams.get("travellers") || 1)
+  );
 
+  const [sortBy, setSortBy] = useState("price");
   const [price, setPrice] = useState(50000);
   const [airline, setAirline] = useState("All");
   const [stops, setStops] = useState("All");
@@ -40,23 +42,11 @@ function Flights() {
       flight.from.toLowerCase().includes(from.toLowerCase()) &&
       flight.to.toLowerCase().includes(to.toLowerCase());
 
-    const matchDepartureDate = Boolean(selectedDeparture);
-
-    const matchReturnDate =
-      tripType !== "roundtrip" || Boolean(selectedReturnDate);
-
     const matchPrice = flight.price <= price;
     const matchAirline = airline === "All" || flight.airline === airline;
     const matchStops = stops === "All" || flight.stops === stops;
 
-    return (
-      matchRoute &&
-      matchDepartureDate &&
-      matchReturnDate &&
-      matchPrice &&
-      matchAirline &&
-      matchStops
-    );
+    return matchRoute && matchPrice && matchAirline && matchStops;
   });
 
   const sortedFlights = [...filteredFlights].sort((a, b) => {
@@ -74,13 +64,20 @@ function Flights() {
         <div className="pt-36 text-center text-white">
           <h1 className="text-6xl font-bold mb-4">✈ Book Your Flight</h1>
           <p className="text-xl opacity-90">
-            Search domestic and international flights by date
+            Search domestic and international flights
           </p>
         </div>
       </section>
 
       <div className="px-6">
-        <FlightSearch from={from} setFrom={setFrom} to={to} setTo={setTo} />
+        <FlightSearch
+          from={from}
+          setFrom={setFrom}
+          to={to}
+          setTo={setTo}
+          travellers={travellers}
+          setTravellers={setTravellers}
+        />
       </div>
 
       <section className="max-w-7xl mx-auto py-16 px-6">
@@ -91,11 +88,8 @@ function Flights() {
             <h3 className="text-3xl font-bold text-slate-800">
               Search flights to see results
             </h3>
-
             <p className="text-slate-500 mt-3">
               Select From, To and Departure Date.
-              {tripType === "roundtrip" &&
-                " Return date is required for round trip."}
             </p>
           </div>
         ) : (
@@ -110,38 +104,26 @@ function Flights() {
               <FlightSort sortBy={sortBy} setSortBy={setSortBy} />
 
               <div className="space-y-6">
-                {sortedFlights.length > 0 ? (
-                  sortedFlights.map((flight) => (
-                    <FlightCard
-                      key={flight.id}
-                      flightNumber={flight.flightNumber}
-                      logo={flight.logo}
-                      airline={flight.airline}
-                      from={flight.from}
-                      to={flight.to}
-                      fromAirport={flight.fromAirport}
-                      fromCode={flight.fromCode}
-                      toAirport={flight.toAirport}
-                      toCode={flight.toCode}
-                      time={`${flight.departure} → ${flight.arrival}`}
-                      duration={flight.duration}
-                      price={`₹${flight.price * travellerCount}`}
-                      basePrice={flight.price}
-                      travellers={travellerCount}
-                      stops={flight.stops}
-                    />
-                  ))
-                ) : (
-                  <div className="bg-white rounded-3xl p-10 text-center shadow-xl">
-                    <h3 className="text-3xl font-bold text-slate-800">
-                      No flights found
-                    </h3>
-
-                    <p className="text-slate-500 mt-3">
-                      Try changing From, To, date, price, airline or stops.
-                    </p>
-                  </div>
-                )}
+                {sortedFlights.map((flight) => (
+                  <FlightCard
+                    key={flight.id}
+                    flightNumber={flight.flightNumber}
+                    logo={flight.logo}
+                    airline={flight.airline}
+                    from={flight.from}
+                    to={flight.to}
+                    fromAirport={flight.fromAirport}
+                    fromCode={flight.fromCode}
+                    toAirport={flight.toAirport}
+                    toCode={flight.toCode}
+                    time={`${flight.departure} → ${flight.arrival}`}
+                    duration={flight.duration}
+                    price={`₹${flight.price * travellers}`}
+                    basePrice={flight.price}
+                    travellers={travellers}
+                    stops={flight.stops}
+                  />
+                ))}
               </div>
             </div>
           </div>
