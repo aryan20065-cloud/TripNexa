@@ -1,10 +1,19 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
-import { useNavigate } from "react-router-dom";
 
 function Payment() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const bookingData = location.state;
+
   const [method, setMethod] = useState("upi");
+
+  const confirmPayment = () => {
+    navigate("/booking-success", {
+      state: bookingData,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-slate-100">
@@ -36,23 +45,14 @@ function Payment() {
           </div>
 
           {method === "upi" && (
-            <div className="space-y-4">
-              <input
-                className="w-full p-4 border rounded-xl"
-                placeholder="Enter UPI ID"
-              />
-              <div className="grid md:grid-cols-4 gap-4">
-                {["Google Pay", "PhonePe", "Paytm", "BHIM"].map((app) => (
-                  <button className="bg-slate-100 p-4 rounded-xl font-bold">
-                    {app}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <input
+              className="w-full p-4 border rounded-xl"
+              placeholder="Enter UPI ID"
+            />
           )}
 
           {method === "card" && (
-            <div className="space-y-5">
+            <div className="space-y-4">
               <input className="w-full p-4 border rounded-xl" placeholder="Card Holder Name" />
               <input className="w-full p-4 border rounded-xl" placeholder="Card Number" />
               <div className="grid grid-cols-2 gap-4">
@@ -65,7 +65,7 @@ function Payment() {
           {method === "netbanking" && (
             <div className="grid md:grid-cols-3 gap-4">
               {["SBI", "HDFC", "ICICI", "Axis", "Kotak", "Canara"].map((bank) => (
-                <button className="bg-slate-100 p-4 rounded-xl font-bold">
+                <button key={bank} className="bg-slate-100 p-4 rounded-xl font-bold">
                   {bank}
                 </button>
               ))}
@@ -75,7 +75,7 @@ function Payment() {
           {method === "wallet" && (
             <div className="grid md:grid-cols-3 gap-4">
               {["Paytm Wallet", "Amazon Pay", "Mobikwik", "Freecharge"].map((wallet) => (
-                <button className="bg-slate-100 p-4 rounded-xl font-bold">
+                <button key={wallet} className="bg-slate-100 p-4 rounded-xl font-bold">
                   {wallet}
                 </button>
               ))}
@@ -83,7 +83,7 @@ function Payment() {
           )}
 
           <button
-            onClick={() => navigate("/booking-success")}
+            onClick={confirmPayment}
             className="mt-10 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl text-xl font-bold hover:scale-105 transition"
           >
             Pay & Confirm Booking
