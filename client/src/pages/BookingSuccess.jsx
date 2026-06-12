@@ -1,85 +1,76 @@
 import { useLocation, Link } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import { formatPrice } from "../utils/currency";
-function BookingSuccess() {
+
+function HotelBookingSuccess() {
   const { state } = useLocation();
 
-  const passengers = state?.passengers || [];
-  const bookingId = `TNX-${Math.floor(Math.random() * 90000 + 10000)}`;
-
-  const downloadTicket = () => {
-    window.print();
-  };
+  const bookingId = `HTL-${Math.floor(Math.random() * 90000 + 10000)}`;
+  const guestsList = state?.guestsList || [];
 
   return (
     <div className="min-h-screen bg-slate-100">
-      <section className="bg-gradient-to-r from-blue-700 to-purple-700 pb-28">
-        <Navbar />
+      <Navbar />
 
-        <div className="pt-36 text-center text-white">
-          <h1 className="text-6xl font-bold mb-4">🎉 Booking Confirmed</h1>
-          <p className="text-xl opacity-90">Your TripNexa e-ticket is ready</p>
-        </div>
-      </section>
+      <div className="max-w-4xl mx-auto pt-36 px-6 pb-20">
+        <div className="bg-white rounded-3xl shadow-2xl p-10">
+          <h1 className="text-5xl font-bold text-center mb-6">
+            🎉 Hotel Booking Confirmed
+          </h1>
 
-      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl p-10 -mt-16 relative z-10">
-        <h2 className="text-4xl font-bold mb-6">E-Ticket</h2>
+          <div className="space-y-3 text-lg">
+            <p><b>Booking ID:</b> {bookingId}</p>
+            <p><b>Hotel:</b> {state?.hotelName}</p>
+            <p><b>City:</b> {state?.city}</p>
+            <p><b>Phone:</b> {state?.phone}</p>
+            <p><b>Email:</b> {state?.email}</p>
+            <p><b>Room:</b> {state?.roomType}</p>
+            <p><b>Rooms:</b> {state?.rooms}</p>
+            <p><b>Guests Selected:</b> {state?.guests}</p>
+            <p><b>Total Paid:</b> {formatPrice(state?.total || 0)}</p>
+            <p><b>Status:</b> Confirmed ✅</p>
+          </div>
 
-        <div className="space-y-3 text-lg">
-          <p><b>Booking ID:</b> {bookingId}</p>
-          <p><b>Status:</b> Confirmed</p>
-          <p><b>Flight No:</b> {state?.flightNumber}</p>
-          <p><b>Airline:</b> {state?.airline}</p>
-          <p><b>Route:</b> {state?.from} → {state?.to}</p>
-          <p><b>Departure Airport:</b> {state?.fromAirport} ({state?.fromCode})</p>
-          <p><b>Arrival Airport:</b> {state?.toAirport} ({state?.toCode})</p>
-          <p><b>Time:</b> {state?.time}</p>
-          <p><b>Duration:</b> {state?.duration}</p>
-          <p><b>Class:</b> {state?.travelClass}</p>
-          <p><b>Meal:</b> {state?.meal}</p>
-          <p><b>Baggage:</b> {state?.baggage}</p>
-          <p><b>Total Paid:</b> {formatPrice(Number(state?.totalAmount || 0))}</p>
-          <p><b>Payment:</b> Paid</p>
-        </div>
+          <div className="mt-8">
+            <h2 className="text-3xl font-bold mb-4">Guest Details</h2>
 
-        <div className="mt-8">
-          <h3 className="text-3xl font-bold mb-4">Passengers</h3>
-
-          {passengers.length > 0 ? (
-            passengers.map((passenger, index) => (
+            {guestsList.map((guest, index) => (
               <div
                 key={index}
                 className="bg-slate-100 rounded-2xl p-5 mb-4"
               >
-                <p className="font-bold text-xl">Passenger {index + 1}</p>
-                <p>Name: {passenger.name}</p>
-                <p>Age: {passenger.age}</p>
-                <p>Seat: {passenger.seat}</p>
+                <p className="font-bold text-xl">Guest {index + 1}</p>
+                <p>Name: {guest.name}</p>
+                <p>Age: {guest.age}</p>
               </div>
-            ))
-          ) : (
-            <p>No passenger details found.</p>
+            ))}
+          </div>
+
+          {state?.specialRequest && (
+            <div className="mt-6 bg-yellow-50 p-5 rounded-2xl">
+              <p><b>Special Request:</b> {state.specialRequest}</p>
+            </div>
           )}
-        </div>
 
-        <div className="flex gap-4 mt-8">
-          <button
-            onClick={downloadTicket}
-            className="flex-1 bg-blue-600 text-white py-4 rounded-xl font-bold"
-          >
-            Download / Print Ticket
-          </button>
+          <div className="flex gap-4 mt-8">
+            <button
+              onClick={() => window.print()}
+              className="flex-1 bg-blue-600 text-white py-4 rounded-xl font-bold"
+            >
+              Download / Print Voucher
+            </button>
 
-          <Link
-            to="/"
-            className="flex-1 text-center bg-gray-200 py-4 rounded-xl font-bold"
-          >
-            Back to Home
-          </Link>
+            <Link
+              to="/hotels"
+              className="flex-1 text-center bg-gray-200 py-4 rounded-xl font-bold"
+            >
+              Back to Hotels
+            </Link>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default BookingSuccess;
+export default HotelBookingSuccess;
