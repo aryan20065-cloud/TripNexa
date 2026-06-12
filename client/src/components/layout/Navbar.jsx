@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
 
 function Navbar() {
+  const handleCurrencyChange = (e) => {
+    localStorage.setItem("currency", e.target.value);
+    window.dispatchEvent(new Event("currencyChange"));
+  };
+
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
-        <Link to="/" className="text-3xl font-extrabold text-white flex items-center gap-2">
+        <Link
+          to="/"
+          className="text-3xl font-extrabold text-white flex items-center gap-2"
+        >
           ✈ TripNexa
         </Link>
 
@@ -17,8 +25,8 @@ function Navbar() {
           <Link to="/visa">Visa</Link>
           <Link to="/cruise">Cruise</Link>
           <Link to="/insurance">Insurance</Link>
-          <Link to="/wishlist"> Wishlist</Link>
-          <Link to="/mytrips"> My Trips</Link>
+          <Link to="/wishlist">❤️ Wishlist</Link>
+          <Link to="/mytrips">🧳 My Trips</Link>
         </div>
 
         <div className="flex items-center gap-3">
@@ -39,10 +47,7 @@ function Navbar() {
           <select
             className="bg-white rounded-full px-4 py-2 font-bold outline-none cursor-pointer text-sm"
             defaultValue={localStorage.getItem("currency") || "INR"}
-            onChange={(e) => {
-              localStorage.setItem("currency", e.target.value);
-              window.location.reload();
-            }}
+            onChange={handleCurrencyChange}
           >
             <option value="INR">🇮🇳 INR</option>
             <option value="USD">🇺🇸 USD</option>
