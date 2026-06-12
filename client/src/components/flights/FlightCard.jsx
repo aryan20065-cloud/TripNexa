@@ -34,3 +34,6 @@
 >
   Continue to Payment
 </button>
+
+
+export default FlightCard;
