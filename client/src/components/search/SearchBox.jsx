@@ -13,6 +13,10 @@ function SearchBox() {
   const [travellers, setTravellers] = useState(1);
   const [fare, setFare] = useState("Regular");
 
+  const [multiFrom, setMultiFrom] = useState("");
+  const [multiTo, setMultiTo] = useState("");
+  const [multiDate, setMultiDate] = useState("");
+
   const inputClass =
     "w-full h-16 px-4 text-lg bg-white text-slate-900 border border-gray-300 rounded-2xl outline-none focus:ring-2 focus:ring-cyan-400";
 
@@ -63,6 +67,18 @@ function SearchBox() {
       return;
     }
 
+    if (tripType === "multicity") {
+      if (!multiFrom || !multiTo || !multiDate) {
+        alert("Please fill second city route and date for Multi City.");
+        return;
+      }
+
+      if (multiFrom === multiTo) {
+        alert("Second From and Second To cannot be the same.");
+        return;
+      }
+    }
+
     const params = new URLSearchParams({
       searched: "true",
       tripType,
@@ -72,6 +88,9 @@ function SearchBox() {
       returnDate,
       travellers: String(travellers),
       fare,
+      multiFrom,
+      multiTo,
+      multiDate,
     });
 
     navigate(`/flights?${params.toString()}`);
@@ -179,22 +198,45 @@ function SearchBox() {
       </div>
 
       {tripType === "multicity" && (
-        <div className="mt-4 grid md:grid-cols-3 gap-4">
-          <select className={inputClass}>
-            <option>Second From City</option>
-            {cities.map((city) => (
-              <option key={city}>{city}</option>
-            ))}
-          </select>
+        <div className="mt-6 bg-white/20 border border-white/30 rounded-3xl p-5">
+          <h3 className="text-white font-bold mb-4">
+            Multi City - Second Route
+          </h3>
 
-          <select className={inputClass}>
-            <option>Second To City</option>
-            {cities.map((city) => (
-              <option key={city}>{city}</option>
-            ))}
-          </select>
+          <div className="grid md:grid-cols-3 gap-4">
+            <select
+              value={multiFrom}
+              onChange={(e) => setMultiFrom(e.target.value)}
+              className={inputClass}
+            >
+              <option value="">Second From City</option>
+              {cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
 
-          <input className={inputClass} type="date" />
+            <select
+              value={multiTo}
+              onChange={(e) => setMultiTo(e.target.value)}
+              className={inputClass}
+            >
+              <option value="">Second To City</option>
+              {cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
+
+            <input
+              value={multiDate}
+              onChange={(e) => setMultiDate(e.target.value)}
+              className={inputClass}
+              type="date"
+            />
+          </div>
         </div>
       )}
 
