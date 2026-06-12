@@ -38,7 +38,7 @@ function BookingSuccess() {
           <p><b>Class:</b> {state?.travelClass}</p>
           <p><b>Meal:</b> {state?.meal}</p>
           <p><b>Baggage:</b> {state?.baggage}</p>
-          <p><b>Total Paid:</b> {formatPrice(Number(state?.totalAmount || 0))}
+          <p><b>Total Paid:</b> {formatPrice(Number(state?.totalAmount || 0))}</p>
           <p><b>Payment:</b> Paid</p>
         </div>
 
