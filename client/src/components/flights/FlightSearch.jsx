@@ -1,46 +1,92 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import cities from "../../data/cities";
 
 function FlightSearch({ from, setFrom, to, setTo }) {
+  const navigate = useNavigate();
+
   const [tripType, setTripType] = useState("oneway");
   const [departure, setDeparture] = useState("");
   const [returnDate, setReturnDate] = useState("");
-  const [showTraveller, setShowTraveller] = useState(false);
-  const [adults, setAdults] = useState(1);
-  const [children, setChildren] = useState(0);
-  const [infants, setInfants] = useState(0);
-  const [travelClass, setTravelClass] = useState("Economy");
+  const [travellers, setTravellers] = useState(1);
   const [fare, setFare] = useState("Regular");
+
+  const [multiFrom, setMultiFrom] = useState("");
+  const [multiTo, setMultiTo] = useState("");
+  const [multiDate, setMultiDate] = useState("");
+
+  const inputClass =
+    "w-full h-16 px-5 text-lg bg-white text-slate-900 border border-slate-300 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500";
 
   const swapCities = () => {
     setFrom(to);
     setTo(from);
   };
 
-  const totalTravellers = adults + children + infants;
+  const handleSearch = () => {
+    if (!from || !to) {
+      alert("Please select From and To locations.");
+      return;
+    }
+
+    if (from === to) {
+      alert("From and To cannot be same.");
+      return;
+    }
+
+    if (!departure) {
+      alert("Please select departure date.");
+      return;
+    }
+
+    if (tripType === "roundtrip" && !returnDate) {
+      alert("Please select return date.");
+      return;
+    }
+
+    if (tripType === "multicity" && (!multiFrom || !multiTo || !multiDate)) {
+      alert("Please fill Multi City second route.");
+      return;
+    }
+
+    const params = new URLSearchParams({
+      searched: "true",
+      tripType,
+      from,
+      to,
+      departure,
+      returnDate,
+      travellers: String(travellers),
+      fare,
+      multiFrom,
+      multiTo,
+      multiDate,
+    });
+
+    navigate(`/flights?${params.toString()}`);
+  };
 
   return (
-    <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-7xl mx-auto -mt-16 relative z-10">
-      <h2 className="text-3xl font-bold mb-8 text-slate-900">
-        Search Flights
-      </h2>
+    <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-7xl mx-auto -mt-16 relative z-10">
+      <h2 className="text-4xl font-bold mb-8">Search Flights</h2>
 
-      <div className="flex flex-wrap gap-4 mb-8">
+      <div className="flex flex-wrap gap-5 mb-8">
         {[
-          { id: "oneway", label: "One Way" },
-          { id: "roundtrip", label: "Round Trip" },
-          { id: "multicity", label: "Multi City" },
-        ].map((item) => (
+          ["oneway", "One Way"],
+          ["roundtrip", "Round Trip"],
+          ["multicity", "Multi City"],
+        ].map(([value, label]) => (
           <button
-            key={item.id}
-            onClick={() => setTripType(item.id)}
-            className={`px-6 py-3 rounded-full font-bold transition ${
-              tripType === item.id
+            key={value}
+            type="button"
+            onClick={() => setTripType(value)}
+            className={`px-8 py-4 rounded-full font-bold transition ${
+              tripType === value
                 ? "bg-blue-600 text-white"
                 : "bg-slate-100 text-slate-700"
             }`}
           >
-            {item.label}
+            {label}
           </button>
         ))}
       </div>
@@ -49,17 +95,20 @@ function FlightSearch({ from, setFrom, to, setTo }) {
         <select
           value={from}
           onChange={(e) => setFrom(e.target.value)}
-          className="p-4 border rounded-2xl outline-none"
+          className={inputClass}
         >
           <option value="">From</option>
           {cities.map((city) => (
-            <option key={city}>{city}</option>
+            <option key={city} value={city}>
+              {city}
+            </option>
           ))}
         </select>
 
         <button
+          type="button"
           onClick={swapCities}
-          className="bg-blue-50 text-blue-700 rounded-2xl font-bold hover:bg-blue-100 transition"
+          className="h-16 bg-blue-50 text-blue-700 rounded-2xl font-bold text-2xl hover:bg-blue-100"
         >
           ⇄
         </button>
@@ -67,73 +116,97 @@ function FlightSearch({ from, setFrom, to, setTo }) {
         <select
           value={to}
           onChange={(e) => setTo(e.target.value)}
-          className="p-4 border rounded-2xl outline-none"
+          className={inputClass}
         >
           <option value="">To</option>
           {cities.map((city) => (
-            <option key={city}>{city}</option>
+            <option key={city} value={city}>
+              {city}
+            </option>
           ))}
         </select>
 
         <input
           value={departure}
           onChange={(e) => setDeparture(e.target.value)}
-          className="p-4 border rounded-2xl outline-none"
           type="date"
+          className={inputClass}
         />
 
         {tripType === "roundtrip" ? (
           <input
             value={returnDate}
             onChange={(e) => setReturnDate(e.target.value)}
-            className="p-4 border rounded-2xl outline-none"
             type="date"
+            className={inputClass}
           />
         ) : (
-          <div className="p-4 border rounded-2xl text-slate-400">
+          <div className="h-16 px-5 flex items-center rounded-2xl border border-slate-300 text-slate-400">
             Add Return
           </div>
         )}
 
-        <button
-          onClick={() => setShowTraveller(!showTraveller)}
-          className="p-4 border rounded-2xl text-left font-semibold"
-        >
-          {totalTravellers} Traveller • {travelClass}
-        </button>
+        <input
+          value={travellers}
+          onChange={(e) => setTravellers(e.target.value)}
+          type="number"
+          min="1"
+          className={inputClass}
+        />
       </div>
 
-      {showTraveller && (
-        <div className="mt-6 bg-slate-50 rounded-3xl p-6 shadow-inner">
-          <div className="grid md:grid-cols-3 gap-6">
-            <Counter label="Adults" value={adults} setValue={setAdults} min={1} />
-            <Counter label="Children" value={children} setValue={setChildren} />
-            <Counter label="Infants" value={infants} setValue={setInfants} />
-          </div>
+      {tripType === "multicity" && (
+        <div className="mt-6 bg-slate-50 border rounded-3xl p-6">
+          <h3 className="text-2xl font-bold mb-4">Multi City Second Route</h3>
 
-          <select
-            value={travelClass}
-            onChange={(e) => setTravelClass(e.target.value)}
-            className="mt-6 w-full p-4 border rounded-2xl outline-none"
-          >
-            <option>Economy</option>
-            <option>Premium Economy</option>
-            <option>Business</option>
-            <option>First Class</option>
-          </select>
+          <div className="grid md:grid-cols-3 gap-4">
+            <select
+              value={multiFrom}
+              onChange={(e) => setMultiFrom(e.target.value)}
+              className={inputClass}
+            >
+              <option value="">Second From City</option>
+              {cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={multiTo}
+              onChange={(e) => setMultiTo(e.target.value)}
+              className={inputClass}
+            >
+              <option value="">Second To City</option>
+              {cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
+
+            <input
+              value={multiDate}
+              onChange={(e) => setMultiDate(e.target.value)}
+              type="date"
+              className={inputClass}
+            />
+          </div>
         </div>
       )}
 
       <div className="mt-8">
-        <h3 className="font-bold mb-4 text-slate-900">Special Fare</h3>
+        <h3 className="text-xl font-bold mb-4">Special Fare</h3>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-4">
           {["Regular", "Student", "Senior Citizen", "Armed Forces", "Doctors & Nurses"].map(
             (item) => (
               <button
                 key={item}
+                type="button"
                 onClick={() => setFare(item)}
-                className={`px-5 py-3 rounded-xl font-semibold transition ${
+                className={`px-6 py-4 rounded-xl font-bold ${
                   fare === item
                     ? "bg-blue-600 text-white"
                     : "bg-slate-100 text-slate-700"
@@ -146,35 +219,13 @@ function FlightSearch({ from, setFrom, to, setTo }) {
         </div>
       </div>
 
-      <button className="mt-8 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-2xl text-xl font-bold hover:scale-105 transition">
+      <button
+        type="button"
+        onClick={handleSearch}
+        className="mt-10 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-5 rounded-2xl text-2xl font-bold hover:scale-105 transition"
+      >
         Search Flights
       </button>
-    </div>
-  );
-}
-
-function Counter({ label, value, setValue, min = 0 }) {
-  return (
-    <div className="bg-white p-5 rounded-2xl shadow">
-      <p className="font-bold mb-4">{label}</p>
-
-      <div className="flex items-center justify-between">
-        <button
-          onClick={() => setValue(Math.max(min, value - 1))}
-          className="bg-slate-200 px-4 py-2 rounded-xl font-bold"
-        >
-          -
-        </button>
-
-        <span className="text-2xl font-bold">{value}</span>
-
-        <button
-          onClick={() => setValue(value + 1)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-xl font-bold"
-        >
-          +
-        </button>
-      </div>
     </div>
   );
 }
