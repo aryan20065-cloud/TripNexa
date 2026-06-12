@@ -164,11 +164,11 @@ function HotelDetailsModal({ hotel, show, onClose }) {
         <div className="flex gap-4 mt-8">
 
           <button
-            onClick={confirmBooking}
-            className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold"
-          >
-            Continue Payment
-          </button>
+  onClick={confirmBooking}
+  className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold"
+>
+  Pay & Confirm Booking
+</button>
 
           <button
             onClick={onClose}
