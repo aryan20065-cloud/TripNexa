@@ -79,11 +79,18 @@ function Navbar() {
             Sign Up
           </Link>
 
-          <select className="bg-white rounded-full px-4 py-3 font-semibold outline-none cursor-pointer">
-            <option>🇮🇳 INR</option>
-            <option>🇺🇸 USD</option>
-            <option>🇪🇺 EUR</option>
-            <option>🇦🇪 AED</option>
+          <select
+  className="bg-white rounded-full px-4 py-3 font-semibold outline-none cursor-pointer"
+  onChange={(e) => {
+    localStorage.setItem("currency", e.target.value);
+    window.location.reload();
+  }}
+>
+  <option value="INR">🇮🇳 INR</option>
+  <option value="USD">🇺🇸 USD</option>
+  <option value="EUR">🇪🇺 EUR</option>
+  <option value="AED">🇦🇪 AED</option>
+
           </select>
 
         </div>

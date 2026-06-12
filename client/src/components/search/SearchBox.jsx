@@ -23,7 +23,7 @@ function SearchBox() {
   const services = [
     { icon: "✈", label: "Flights", path: "/flights" },
     { icon: "🏨", label: "Hotels", path: "/hotels" },
-    { icon: "🏡", label: "Villas", path: "/hotels" },
+    
     { icon: "🌴", label: "Holidays", path: "/holidays" },
     { icon: "🚆", label: "Trains", path: "/trains" },
     { icon: "🚌", label: "Buses", path: "/bus" },
