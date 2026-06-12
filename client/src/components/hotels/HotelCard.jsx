@@ -19,7 +19,12 @@ function HotelCard({ hotel }) {
               <p className="text-gray-500 mt-2">{hotel.city}</p>
             </div>
 
-            <button className="text-3xl">♡</button>
+            <button
+  onClick={() => alert(`${hotel.name} added to wishlist`)}
+  className="text-3xl hover:scale-110 transition"
+>
+  ❤️
+</button>
           </div>
 
           <p className="text-yellow-500 mt-3">
