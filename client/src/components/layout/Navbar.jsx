@@ -17,7 +17,7 @@ function Navbar() {
           <Link to="/visa">Visa</Link>
           <Link to="/cruise">Cruise</Link>
           <Link to="/insurance">Insurance</Link>
-          <Link to="/wishlist">❤️ Wishlist</Link>
+          <Link to="/wishlist"> Wishlist</Link>
           <Link to="/mytrips">🧳 My Trips</Link>
         </div>
 
