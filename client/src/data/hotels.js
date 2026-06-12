@@ -8,6 +8,7 @@ const hotels = [
     image: "🏨",
     type: "Luxury",
     amenities: ["Free WiFi", "Pool", "Breakfast", "Spa"],
+    rooms: ["Deluxe Room", "Luxury Suite", "Executive Room"],
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ const hotels = [
     image: "🏙️",
     type: "Luxury",
     amenities: ["Sea View", "Pool", "Gym", "Restaurant"],
+    rooms: ["Sea View Room", "Premium Suite", "Business Room"],
   },
   {
     id: 3,
@@ -28,6 +30,7 @@ const hotels = [
     image: "🏰",
     type: "Premium",
     amenities: ["Free WiFi", "Spa", "Breakfast", "Airport Pickup"],
+    rooms: ["Garden View Room", "Royal Suite", "Club Room"],
   },
   {
     id: 4,
@@ -38,6 +41,7 @@ const hotels = [
     image: "🏖️",
     type: "Resort",
     amenities: ["Beach View", "Pool", "Bar", "Breakfast"],
+    rooms: ["Beach View Room", "Cottage", "Family Suite"],
   },
   {
     id: 5,
@@ -48,6 +52,7 @@ const hotels = [
     image: "🌆",
     type: "International",
     amenities: ["City View", "Pool", "Luxury Spa", "Breakfast"],
+    rooms: ["City View Room", "Sky Suite", "Luxury Room"],
   },
 ];
 
