@@ -14,6 +14,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import HotelBookingSuccess from "./pages/HotelBookingSuccess";
 function App() {
+  console.log(import.meta.env.VITE_EXCHANGE_API_KEY);
   return (
     <Routes>
       <Route path="/" element={<Home />} />
