@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
+import { useCurrency } from "../../context/CurrencyContext";
 
 function Navbar() {
-  const handleCurrencyChange = (e) => {
-    localStorage.setItem("currency", e.target.value);
-    window.dispatchEvent(new Event("currencyChange"));
-  };
+  const { currency, setCurrency } = useCurrency();
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 shadow-lg">
@@ -45,14 +43,19 @@ function Navbar() {
           </Link>
 
           <select
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value)}
             className="bg-white rounded-full px-4 py-2 font-bold outline-none cursor-pointer text-sm"
-            defaultValue={localStorage.getItem("currency") || "INR"}
-            onChange={handleCurrencyChange}
           >
             <option value="INR">🇮🇳 INR</option>
             <option value="USD">🇺🇸 USD</option>
             <option value="EUR">🇪🇺 EUR</option>
+            <option value="GBP">🇬🇧 GBP</option>
             <option value="AED">🇦🇪 AED</option>
+            <option value="AUD">🇦🇺 AUD</option>
+            <option value="CAD">🇨🇦 CAD</option>
+            <option value="SGD">🇸🇬 SGD</option>
+            <option value="JPY">🇯🇵 JPY</option>
           </select>
         </div>
       </div>
